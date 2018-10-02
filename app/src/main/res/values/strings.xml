@@ -3,6 +3,10 @@
 
     <string name="city_name">City Name</string>
 
+    <string name="add_new_localization">Enter new localization by </string>
+    <string name="current_localization">Current Localization</string>
+    <string name="by_location_name">Location Name</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

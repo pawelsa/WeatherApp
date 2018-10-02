@@ -32,5 +32,5 @@ public class DatabaseWeather extends BaseModel {
 	public double speed;
 	public double deg;
 
-
+	public String cityImageUrl;
 }

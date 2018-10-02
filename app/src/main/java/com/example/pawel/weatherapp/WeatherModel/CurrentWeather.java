@@ -56,7 +56,7 @@ public class CurrentWeather extends BaseModel {
 		return weather;
 	}
 
-	public DatabaseWeather toDatabaseWeather(int cityID) {
+	public DatabaseWeather toDatabaseWeather(int cityID, String cityImageUrl) {
 		DatabaseWeather databaseWeather = new DatabaseWeather();
 		databaseWeather.dt = this.dt;
 		databaseWeather.temp = this.main.temp;
@@ -73,6 +73,7 @@ public class CurrentWeather extends BaseModel {
 		databaseWeather.deg = this.wind.deg;
 		databaseWeather.dt_txt = this.dt_txt;
 		databaseWeather.cityID = cityID;
+		databaseWeather.cityImageUrl = cityImageUrl;
 
 		return databaseWeather;
 	}

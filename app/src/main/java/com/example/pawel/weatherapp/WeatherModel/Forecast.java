@@ -1,5 +1,7 @@
 package com.example.pawel.weatherapp.WeatherModel;
 
+import android.util.Log;
+
 import com.example.pawel.weatherapp.Database.MyDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -24,6 +26,8 @@ public class Forecast extends BaseModel {
 	@Column
 	public City city;
 
+	public String cityImageUrl;
+
 	@OneToMany(methods = OneToMany.Method.ALL, variableName = "list")
 	public List<CurrentWeather> oneToManyWeathers() {
 		if (list == null) {
@@ -46,9 +50,10 @@ public class Forecast extends BaseModel {
 		return res;
 	}
 
-	public void saveInDatabse() {
+	public void saveInDatabase() {
+		Log.i("Result-save", cityImageUrl);
 		for (CurrentWeather currentWeather : this.list) {
-			DatabaseWeather databaseWeather = currentWeather.toDatabaseWeather(this.city.id);
+			DatabaseWeather databaseWeather = currentWeather.toDatabaseWeather(this.city.id, cityImageUrl);
 			databaseWeather.save();
 		}
 	}

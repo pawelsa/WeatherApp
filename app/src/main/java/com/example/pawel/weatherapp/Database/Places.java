@@ -17,13 +17,21 @@ public class Places extends BaseModel {
 	@Column
 	public String name;
 
+	@Column
+	public String cityImageUrl;
+
 	public Places() {
 	}
 
-	public Places(City city) {
+	public Places(String cityName) {
+		this.name = cityName;
+	}
+
+	public Places(City city, String cityImageUrl) {
 
 		this.name = city.name;
 		this.cityID = city.id;
+		this.cityImageUrl = cityImageUrl;
 	}
 
 	@Override

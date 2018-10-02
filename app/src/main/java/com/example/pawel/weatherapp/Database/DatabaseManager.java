@@ -1,7 +1,5 @@
 package com.example.pawel.weatherapp.Database;
 
-import android.util.Log;
-
 import com.example.pawel.weatherapp.PlaceWeatherData;
 import com.example.pawel.weatherapp.WeatherModel.DatabaseWeather;
 import com.example.pawel.weatherapp.WeatherModel.DatabaseWeather_Table;
@@ -36,7 +34,6 @@ public class DatabaseManager {
 				.queryList();
 
 		return placesList.contains(place);
-
 	}
 
 	public static Single<List<Places>> getPlaces_S() {
@@ -60,7 +57,6 @@ public class DatabaseManager {
 			for (int i = 0; i < places.size(); i++) {
 				places.get(i).save();
 			}
-			Log.i("Number of places", String.valueOf(places.size()));
 			return Single.just(true);
 		});
 	}
@@ -100,10 +96,9 @@ public class DatabaseManager {
 	}
 
 	public static void saveForecastAndPlacesToDatabase(final Forecast forecast) {
+		forecast.saveInDatabase();
 
-		forecast.saveInDatabse();
-
-		Places places = new Places(forecast.city);
+		Places places = new Places(forecast.city, forecast.cityImageUrl);
 		places.save();
 	}
 

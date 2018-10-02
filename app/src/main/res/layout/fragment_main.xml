@@ -24,8 +24,9 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
-        android:src="@drawable/ic_add"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_add_location"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

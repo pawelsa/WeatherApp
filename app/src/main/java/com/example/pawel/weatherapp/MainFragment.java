@@ -12,8 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pawel.weatherapp.API.RFRequest;
-import com.example.pawel.weatherapp.Database.DatabaseManager;
+import com.example.pawel.weatherapp.API.ForecastDownload;
 
 import io.reactivex.disposables.Disposable;
 
@@ -21,7 +20,9 @@ import io.reactivex.disposables.Disposable;
 public class MainFragment extends Fragment {
 
 
+	private static final int ERROR_DIALOG_REQUEST = 9001;
 	Disposable getAdapterData;
+	Disposable photoDownloader;
 
 
 	RecyclerView forecastRecyclerView;
@@ -42,14 +43,6 @@ public class MainFragment extends Fragment {
 		adapter = new MainFragmentAdapter();
 		forecastRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		forecastRecyclerView.setAdapter(adapter);
-
-		DatabaseManager.clearDatabase_S()
-				.subscribe(clear -> Log.i("Clear Database", clear.toString()));
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		getDataForAdapter();
 	}
 
@@ -67,7 +60,10 @@ public class MainFragment extends Fragment {
 		forecastRecyclerView = view.findViewById(R.id.brief_forecast);
 		addFAB = view.findViewById(R.id.FAB_add);
 
-		addFAB.setOnClickListener(v -> Log.i("FAB", "Pressed"));
+		addFAB.setOnClickListener(v -> {
+			AddLocalizationBottomSheet bottomSheet = new AddLocalizationBottomSheet();
+			bottomSheet.show(getActivity().getSupportFragmentManager(), bottomSheet.getTag());
+		});
 	}
 
 	@Override
@@ -88,7 +84,7 @@ public class MainFragment extends Fragment {
 
 	private void getDataForAdapter() {
 
-		getAdapterData = RFRequest.startGettingData()
+		getAdapterData = ForecastDownload.startGettingData()
 				.subscribe(
 						adapter::add,
 						Throwable::printStackTrace,

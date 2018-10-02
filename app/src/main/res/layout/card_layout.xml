@@ -7,9 +7,12 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +22,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <FrameLayout
+                android:id="@+id/fl_card_cityBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_card_cityNameBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ImageView>
+
+                <View
+                    android:id="@+id/v_card_gradient"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="@drawable/gradient_city_name" />
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/tv_card_cityName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/city_name"
+                android:textSize="45sp"
+                app:layout_constraintBottom_toBottomOf="@+id/fl_card_cityBackground"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <SeekBar
-                android:id="@+id/card_date_seekBar"
+                android:id="@+id/sb_card_time"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -32,39 +70,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_weather_icon" />
-
-            <FrameLayout
-                android:id="@+id/card_cityNameBackground"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </FrameLayout>
+                app:layout_constraintTop_toBottomOf="@+id/iv_card_weatherIcon" />
 
             <ImageView
-                android:id="@+id/card_weather_icon"
+                android:id="@+id/iv_card_weatherIcon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/weather_clouds_night"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_cityNameBackground" />
-
-            <TextView
-                android:id="@+id/card_cityName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/city_name"
-                android:textSize="45sp"
-                app:layout_constraintBottom_toBottomOf="@+id/card_cityNameBackground"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/fl_card_cityBackground" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -74,7 +90,7 @@
                 android:layout_marginTop="8dp"
                 android:text="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_date_seekBar" />
+                app:layout_constraintTop_toBottomOf="@+id/sb_card_time" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -86,7 +102,7 @@
                 android:text="2"
                 app:layout_constraintEnd_toStartOf="@+id/textView4"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/card_date_seekBar" />
+                app:layout_constraintTop_toBottomOf="@+id/sb_card_time" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -100,7 +116,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView3"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/card_date_seekBar" />
+                app:layout_constraintTop_toBottomOf="@+id/sb_card_time" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -112,7 +128,7 @@
                 android:text="4"
                 app:layout_constraintEnd_toStartOf="@+id/textView3"
                 app:layout_constraintStart_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/card_date_seekBar" />
+                app:layout_constraintTop_toBottomOf="@+id/sb_card_time" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -122,48 +138,48 @@
                 android:layout_marginTop="8dp"
                 android:text="5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_date_seekBar" />
+                app:layout_constraintTop_toBottomOf="@+id/sb_card_time" />
 
             <TextView
-                android:id="@+id/card_temp"
+                android:id="@+id/tv_card_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="27 C"
                 android:textSize="40sp"
-                app:layout_constraintBottom_toBottomOf="@+id/card_weather_icon"
-                app:layout_constraintStart_toEndOf="@+id/card_weather_icon" />
+                app:layout_constraintBottom_toBottomOf="@+id/iv_card_weatherIcon"
+                app:layout_constraintStart_toEndOf="@+id/iv_card_weatherIcon" />
 
             <TextView
-                android:id="@+id/card_description"
+                android:id="@+id/tv_card_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="16dp"
                 android:text="description"
                 android:textSize="25sp"
-                app:layout_constraintBottom_toTopOf="@+id/card_humidity"
-                app:layout_constraintStart_toEndOf="@+id/card_temp" />
+                app:layout_constraintBottom_toTopOf="@+id/tv_card_humidity"
+                app:layout_constraintStart_toEndOf="@+id/tv_card_temp" />
 
             <TextView
-                android:id="@+id/card_humidity"
+                android:id="@+id/tv_card_humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="humidity"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/card_weather_icon"
-                app:layout_constraintStart_toEndOf="@+id/card_temp" />
+                app:layout_constraintBottom_toBottomOf="@+id/iv_card_weatherIcon"
+                app:layout_constraintStart_toEndOf="@+id/tv_card_temp" />
 
             <TextView
-                android:id="@+id/card_wind"
+                android:id="@+id/tv_card_wind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:text="wind"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/card_humidity"
-                app:layout_constraintStart_toEndOf="@+id/card_humidity" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_card_humidity"
+                app:layout_constraintStart_toEndOf="@+id/tv_card_humidity" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
