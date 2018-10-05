@@ -14,6 +14,10 @@ public class City extends BaseModel {
 
 	public int population;
 	public String name;
-
-
+    
+    public String cityImageUrl;
+    
+    public void setCityImageUrl(String cityImageUrl) {
+        this.cityImageUrl = cityImageUrl;
+    }
 }

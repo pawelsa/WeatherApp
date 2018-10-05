@@ -1,7 +1,5 @@
 package com.example.pawel.weatherapp.WeatherModel;
 
-import android.util.Log;
-
 import com.example.pawel.weatherapp.Database.MyDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -17,7 +15,7 @@ import java.util.List;
 public class Forecast extends BaseModel {
 
 	@Column
-	@PrimaryKey
+	@PrimaryKey(autoincrement = true)
 	public int ID;
 
 	public List<CurrentWeather> list;
@@ -26,14 +24,12 @@ public class Forecast extends BaseModel {
 	@Column
 	public City city;
 
-	public String cityImageUrl;
-
 	@OneToMany(methods = OneToMany.Method.ALL, variableName = "list")
 	public List<CurrentWeather> oneToManyWeathers() {
 		if (list == null) {
 			list = SQLite.select()
-					.from(CurrentWeather.class)/*
-					.where(CurrentWeather_Table.book_id.eq(id))*/
+					.from(CurrentWeather.class)
+					.where(CurrentWeather_Table.forecast_ID.eq(this.ID))
 					.queryList();
 		}
 		return list;
@@ -44,17 +40,14 @@ public class Forecast extends BaseModel {
 		boolean res = super.save();
 		if (list != null) {
 			for (CurrentWeather s : list) {
+				s.setForecast(this);
 				s.save();
 			}
 		}
 		return res;
 	}
-
-	public void saveInDatabase() {
-		Log.i("Result-save", cityImageUrl);
-		for (CurrentWeather currentWeather : this.list) {
-			DatabaseWeather databaseWeather = currentWeather.toDatabaseWeather(this.city.id, cityImageUrl);
-			databaseWeather.save();
-		}
+	
+	public void setCityImageUrl(String url) {
+		this.city.setCityImageUrl(url);
 	}
 }

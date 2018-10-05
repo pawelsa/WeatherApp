@@ -4,63 +4,90 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_newLocalization_createByName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_newLocalization_createByGPS">
+
+        <TextView
+            android:id="@+id/tv_newLocalization_byName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="@string/by_location_name"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_newLocalization_createByName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_newLocalization_createByName"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/by_location_name"
+            android:src="@drawable/ic_create"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_newLocalization_byName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_newLocalization_byName" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_newLocalization_createByGPS"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_newLocalization_chooseEntryType">
+
+        <ImageView
+            android:id="@+id/iv_newLocalization_createByGPS"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/current_localization"
+            android:src="@drawable/ic_my_location"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_newLocalization_createByGPS"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_newLocalization_createByGPS" />
+
+        <TextView
+            android:id="@+id/tv_newLocalization_createByGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="@string/current_localization"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_newLocalization_createByGPS"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
     <TextView
         android:id="@+id/tv_newLocalization_chooseEntryType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/add_new_localization"
         android:textColor="#000"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_newLocalization_createByGPS"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/current_localization"
-        android:src="@drawable/ic_my_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_newLocalization_chooseEntryType" />
-
-    <TextView
-        android:id="@+id/tv_newLocalization_createByGPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/current_localization"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_newLocalization_createByGPS"
-        app:layout_constraintStart_toEndOf="@+id/iv_newLocalization_createByGPS"
-        app:layout_constraintTop_toTopOf="@+id/iv_newLocalization_createByGPS" />
-
-    <ImageView
-        android:id="@+id/iv_newLocalization_createByName"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/by_location_name"
-        android:src="@drawable/ic_create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_newLocalization_createByGPS" />
-
-    <TextView
-        android:id="@+id/tv_newLocalization_byName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/by_location_name"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_newLocalization_createByName"
-        app:layout_constraintStart_toEndOf="@+id/iv_newLocalization_createByName"
-        app:layout_constraintTop_toTopOf="@+id/iv_newLocalization_createByName" />
 
 </android.support.constraint.ConstraintLayout>

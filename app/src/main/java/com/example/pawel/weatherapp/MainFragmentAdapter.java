@@ -12,14 +12,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.pawel.weatherapp.WeatherModel.DatabaseWeather;
+import com.example.pawel.weatherapp.WeatherModel.CurrentWeather;
+import com.example.pawel.weatherapp.WeatherModel.Forecast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapter.CardViewHolder> {
-
-	private List<PlaceWeatherData> placeWeatherDataList;
+    
+    private List<Forecast> placeWeatherDataList;
 	private Context context;
 
 	MainFragmentAdapter() {
@@ -48,8 +49,8 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
 	public int getItemCount() {
 		return placeWeatherDataList.size();
 	}
-
-	public void add(PlaceWeatherData placeWeatherData) {
+    
+    public void add(Forecast placeWeatherData) {
 		placeWeatherDataList.add(placeWeatherData);
 		notifyDataSetChanged();
 	}
@@ -76,20 +77,23 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
 			tvHumidity = itemView.findViewById(R.id.tv_card_humidity);
 			tvWind = itemView.findViewById(R.id.tv_card_wind);
 		}
-
-		void bind(PlaceWeatherData item) {
-
-			Glide.with(context).load(item.place.cityImageUrl).apply(new RequestOptions().centerCrop()).into(ivBackground);
-			tvCityName.setText(item.place.name);
-			int color = ColorManager.getColorFromCityID(item.place.cityID);
+        
+        void bind(Forecast item) {
+            
+            Glide.with(context)
+                    .load(item.cityImageUrl)
+                    .apply(new RequestOptions().centerCrop())
+                    .into(ivBackground);
+            tvCityName.setText(item.city.name);
+            int color = ColorManager.getColorFromCityID(item.city.id);
 			ivBackground.setBackgroundColor(color);
 			tvCityName.setTextColor(ColorManager.getContrastColor(color));
-			updateWeatherInfo(item.placesWeather.get(0));
+            updateWeatherInfo(item.list.get(0));
 
 			sbTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-					updateWeatherInfo(item.placesWeather.get(progress));
+                    updateWeatherInfo(item.list.get(progress));
 				}
 
 				@Override
@@ -103,12 +107,12 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
 				}
 			});
 		}
-
-		void updateWeatherInfo(DatabaseWeather weather) {
-			tvTemp.setText(String.valueOf(weather.temp));
-			tvDescription.setText(weather.description);
-			tvHumidity.setText(String.valueOf(weather.humidity));
-			tvWind.setText(String.valueOf(weather.speed));
+        
+        void updateWeatherInfo(CurrentWeather weather) {
+            tvTemp.setText(String.valueOf(weather.main.temp));
+            tvDescription.setText(weather.weatherList.get(0).description);
+            tvHumidity.setText(String.valueOf(weather.main.humidity));
+            tvWind.setText(String.valueOf(weather.wind.speed));
 		}
 	}
 }

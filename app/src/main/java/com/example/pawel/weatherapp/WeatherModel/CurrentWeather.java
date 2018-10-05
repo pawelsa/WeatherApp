@@ -13,12 +13,12 @@ import java.util.List;
 
 @Table(database = MyDatabase.class, name = "currentWeatherTable")
 public class CurrentWeather extends BaseModel {
-
-	@PrimaryKey
+    
+    @PrimaryKey(autoincrement = true)
 	@Column
 	public int id;
-
-	public List<Weather> weather;
+    
+    public List<Weather> weatherList;
 
 	@ForeignKey(saveForeignKeyModel = true)
 	@Column
@@ -41,19 +41,26 @@ public class CurrentWeather extends BaseModel {
 
 	@Column
 	public String dt_txt;
+    
+    @ForeignKey(stubbedRelationship = true)
+    Forecast forecast;
 
 	public CurrentWeather() {
 	}
-
-	@OneToMany(methods = OneToMany.Method.ALL, variableName = "weather")
+    
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
+    }
+    
+    @OneToMany(methods = OneToMany.Method.ALL, variableName = "weatherList")
 	public List<Weather> oneToManyWeathers() {
-		if (weather == null) {
-			weather = SQLite.select()
+        if (weatherList == null) {
+            weatherList = SQLite.select()
 					.from(Weather.class)
-					.where(Weather_Table.mainID.eq((int) dt))
+                    .where(Weather_Table.currentWeather_id.eq(id))
 					.queryList();
 		}
-		return weather;
+        return weatherList;
 	}
 
 	public DatabaseWeather toDatabaseWeather(int cityID, String cityImageUrl) {
@@ -65,9 +72,9 @@ public class CurrentWeather extends BaseModel {
 		databaseWeather.temp_min = this.main.temp_min;
 		databaseWeather.temp_max = this.main.temp_max;
 		databaseWeather.id = this.id;
-		databaseWeather.main = this.weather.get(0).main;
-		databaseWeather.description = this.weather.get(0).description;
-		databaseWeather.icon = this.weather.get(0).icon;
+        databaseWeather.main = this.weatherList.get(0).main;
+        databaseWeather.description = this.weatherList.get(0).description;
+        databaseWeather.icon = this.weatherList.get(0).icon;
 		databaseWeather.all = this.clouds.all;
 		databaseWeather.speed = this.wind.speed;
 		databaseWeather.deg = this.wind.deg;
@@ -77,24 +84,14 @@ public class CurrentWeather extends BaseModel {
 
 		return databaseWeather;
 	}
-
-/*	@Override
+    
+    @Override
 	public boolean save() {
-		boolean result = super.save();
-
-		if (main!=null)
-			main.save();
-
-		if (wind!=null)
-			wind.save();
-
-		if (clouds!=null)
-			clouds.save();
-
-		if (sys!=null)
-			sys.save();
-
-
-		return result;
-	}*/
+        boolean save = super.save();
+        for (Weather weather : weatherList) {
+            weather.setCurrentWeather(this);
+            weather.save();
+        }
+        return save;
+    }
 }

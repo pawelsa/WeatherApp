@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/main_activity_fragment"
-        android:name="com.example.pawel.weatherapp.MainFragment"
+        android:name="com.example.pawel.weatherapp.GeneralWeatherFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

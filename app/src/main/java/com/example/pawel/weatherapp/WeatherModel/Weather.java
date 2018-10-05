@@ -1,6 +1,7 @@
 package com.example.pawel.weatherapp.WeatherModel;
 
 import com.example.pawel.weatherapp.Database.MyDatabase;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -15,4 +16,12 @@ public class Weather extends BaseModel {
 	public String main;
 	public String description;
 	public String icon;
+    
+    
+    @ForeignKey(stubbedRelationship = true)
+    CurrentWeather currentWeather;
+    
+    public void setCurrentWeather(CurrentWeather currentWeather) {
+        this.currentWeather = currentWeather;
+    }
 }

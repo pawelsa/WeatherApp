@@ -10,8 +10,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ApiCalls {
-
-	@GET("weather")
+    
+    @GET("weatherList")
 	Call<CurrentWeather> getWeather(@Query("q") String cityName,
 									@Query("units") String units,
 									@Query("APPID") String APIID);
