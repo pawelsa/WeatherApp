@@ -24,9 +24,6 @@ android {
             maven {
                 url "https://maven.google.com"
             }
-            maven {
-                url "https://www.jitpack.io"
-            }
         }
     }
     compileOptions {
@@ -36,8 +33,6 @@ android {
     productFlavors {
     }
 }
-
-def dbflow_version = "4.2.4"
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -50,25 +45,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.0.0-rc02'
     implementation 'com.android.support:appcompat-v7:27.0.0-rc02'
 
-    //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
-    //RxJava
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
-
-    //DbFlow
-    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
-    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
-    implementation "com.github.Raizlabs.DBFlow:dbflow-rx2:${dbflow_version}"
-
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
-    //Hawk
-    implementation "com.orhanobut:hawk:2.0.1"
+    implementation project(path: ':weatherlib')
 }
