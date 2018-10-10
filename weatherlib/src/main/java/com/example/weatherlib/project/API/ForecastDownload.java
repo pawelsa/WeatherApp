@@ -71,11 +71,6 @@ public class ForecastDownload {
 	}
 	
 	private static Observable<Forecast> getForecastRequest(String cityName, String units) {
-		List<CitySave> citySaveList = SQLite.select()
-				.from(CitySave.class)
-				.where(CitySave_Table.cityName.eq(cityName.toLowerCase().trim()))
-				.queryList();
-		
 		CitySave toUpdate = SQLite.select()
 				.from(CitySave.class)
 				.where(CitySave_Table.cityName.eq(cityName.toLowerCase().trim()))
@@ -84,8 +79,23 @@ public class ForecastDownload {
 			CitySave newCity = new CitySave(cityName.toLowerCase().trim());
 			newCity.save();
 		}
+		
+		List<CitySave> citySaveList = SQLite.select()
+				.from(CitySave.class)
+				.where(CitySave_Table.cityName.eq(cityName.toLowerCase().trim()))
+				.queryList();
+		
+		for ( CitySave citySave : citySaveList ) {
+			Log.i("City", citySave.cityName);
+		}
+		
 		ApiCalls weatherClient = retrofit.create(ApiCalls.class);
 		return weatherClient.getForecast(cityName, units, APIID)
+				.map(forecastResponse -> {
+					Log.i("URL", forecastResponse.raw().request().url().toString());
+					forecastResponse.body().downloadURL = forecastResponse.raw().request().url().toString();
+					return forecastResponse.body();
+				})
 				.subscribeOn(Schedulers.io())
 				.filter(forecast -> forecast != null);
 	}

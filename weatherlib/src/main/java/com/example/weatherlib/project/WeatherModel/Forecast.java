@@ -23,6 +23,8 @@ public class Forecast extends BaseModel {
 	@ForeignKey(saveForeignKeyModel = true)
 	@Column
 	public City city;
+	
+	public String downloadURL;
 
 	@OneToMany(methods = OneToMany.Method.ALL, variableName = "list")
 	public List<CurrentWeather> oneToManyWeathers() {

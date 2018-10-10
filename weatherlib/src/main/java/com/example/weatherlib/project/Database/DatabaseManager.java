@@ -26,7 +26,7 @@ public class DatabaseManager {
 	public static boolean checkIFPlaceIsAlreadyInDatabase(City place) {
 		CitySave citySave = SQLite.select()
 				.from(CitySave.class)
-				//.where(CitySave_Table.cityName.eq(place.name))
+				.where(CitySave_Table.cityName.eq(place.name))
 				.querySingle();
 		return citySave != null && citySave.downloaded;
 	}
@@ -89,10 +89,20 @@ public class DatabaseManager {
 	}
 	
 	public static void saveForecastToDatabase(final Forecast forecast) {
+		String cityName = getCityNameFromUrl(forecast.downloadURL);
+		forecast.city.name = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
+		
+		List<Forecast> forecastList = SQLite.select().from(Forecast.class)
+				.where(Forecast_Table.city_id.eq(forecast.city.id))
+				.queryList();
+		for ( Forecast forecast1 : forecastList ) {
+			forecast1.delete();
+		}
+		
 		forecast.save();
 		CitySave getCity = SQLite.select()
 				.from(CitySave.class)
-				.where(CitySave_Table.cityName.eq(forecast.city.name))
+				.where(CitySave_Table.cityName.eq(cityName))
 				.querySingle();
 		if ( getCity != null ) {
 			getCity.downloaded = true;
@@ -102,4 +112,11 @@ public class DatabaseManager {
 			citySave.save();
 		}
 	}
+	
+	private static String getCityNameFromUrl(String url) {
+		String[] split = url.split("q=");
+		split = split[1].split("&");
+		return split[0].toLowerCase();
+	}
+	
 }
