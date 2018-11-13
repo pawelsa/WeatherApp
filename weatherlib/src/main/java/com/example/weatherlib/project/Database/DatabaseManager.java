@@ -13,110 +13,101 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class DatabaseManager {
-	
-	public static void init(Context context) {
-		FlowManager.init(new FlowConfig.Builder(context).build());
-	}
-	
-	public static boolean checkIFPlaceIsAlreadyInDatabase(City place) {
-		CitySave citySave = SQLite.select()
-				.from(CitySave.class)
-				.where(CitySave_Table.cityName.eq(place.name))
-				.querySingle();
-		return citySave != null && citySave.downloaded;
-	}
-	
-	public static Observable<City> getCities_OI() {
-		return RXSQLite.rx(SQLite.select()
-				                   .from(City.class))
-				.queryStreamResults()
-				.toObservable();
-	}
-	
-	public static Single<Boolean> clearDatabase_S() {
-		return getCities_S().flatMap(cities -> {
-			FlowManager.getDatabase(MyDatabase.class)
-					.reset();
-			for ( City city : cities ) {
-				city.save();
-			}
-			return Single.just(true);
-		});
-	}
-	
-	public static Single<List<City>> getCities_S() {
-		return RXSQLite.rx(SQLite.select()
-				                   .from(City.class))
-				.queryList();
-	}
-	
-	public static Maybe<Forecast> getForecastFor(int cityID) {
-		return RXSQLite.rx(SQLite.select()
-				                   .from(Forecast.class)
-				                   .where(Forecast_Table.city_id.eq(cityID))
-		)
-				.querySingle();
-	}
-	
-	public static Observable<Forecast> getForecasts() {
-		
-		List<Forecast> forecastList = SQLite.select()
-				.from(Forecast.class)
-				.queryList();
-		
-		return RXSQLite.rx(SQLite.select()
-				                   .from(Forecast.class))
-				.queryStreamResults()
-				.toObservable()
-				.filter(forecast -> {
-					CitySave citySave = SQLite.select()
-							.from(CitySave.class)
-							.where(CitySave_Table.cityName.eq(forecast.city.name.toLowerCase()))
-							.querySingle();
-					return citySave != null && citySave.downloaded;
-				})
-				.doOnNext(forecast -> Log.i("Forecast1", forecast.city.name));
-	}
-	
-	public static Observable<Forecast> saveForecastAndStream(final Forecast forecast) {
-		saveForecastToDatabase(forecast);
-		return Observable.just(forecast);
-	}
-	
-	public static void saveForecastToDatabase(final Forecast forecast) {
-		String cityName = getCityNameFromUrl(forecast.downloadURL);
-		forecast.city.name = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
-		
-		List<Forecast> forecastList = SQLite.select().from(Forecast.class)
-				.where(Forecast_Table.city_id.eq(forecast.city.id))
-				.queryList();
-		for ( Forecast forecast1 : forecastList ) {
-			forecast1.delete();
-		}
-		
-		forecast.save();
-		CitySave getCity = SQLite.select()
-				.from(CitySave.class)
-				.where(CitySave_Table.cityName.eq(cityName))
-				.querySingle();
-		if ( getCity != null ) {
-			getCity.downloaded = true;
-			getCity.update();
-		} else {
-			CitySave citySave = new CitySave(forecast.city.name.trim().toLowerCase(), true);
-			citySave.save();
-		}
-	}
-	
-	private static String getCityNameFromUrl(String url) {
-		String[] split = url.split("q=");
-		split = split[1].split("&");
-		return split[0].toLowerCase();
-	}
-	
+    
+    public static void init(Context context) {
+        FlowManager.init(new FlowConfig.Builder(context).build());
+    }
+    
+    public static boolean checkIFPlaceIsAlreadyInDatabase(City place) {
+        CitySave citySave = SQLite.select()
+                .from(CitySave.class)
+                .where(CitySave_Table.cityName.eq(place.name))
+                .querySingle();
+        return citySave != null && citySave.downloaded;
+    }
+    
+    public static Observable<City> getCities_OI() {
+        return RXSQLite.rx(SQLite.select()
+                .from(City.class))
+                .queryStreamResults()
+                .toObservable();
+    }
+    
+    public static Single<Boolean> clearDatabase_S() {
+        return getCities_S().flatMap(cities -> {
+            FlowManager.getDatabase(MyDatabase.class)
+                    .reset();
+            for (City city : cities) {
+                city.save();
+            }
+            return Single.just(true);
+        });
+    }
+    
+    public static Single<List<City>> getCities_S() {
+        return RXSQLite.rx(SQLite.select()
+                .from(City.class))
+                .queryList();
+    }
+    
+    public static Observable<Forecast> getForecasts() {
+        return RXSQLite.rx(SQLite.select()
+                .from(Forecast.class))
+                .queryStreamResults()
+                .subscribeOn(Schedulers.io())
+                .toObservable()
+                .filter(forecast -> {
+                    CitySave citySave = SQLite.select()
+                            .from(CitySave.class)
+                            .where(CitySave_Table.cityName.eq(forecast.city.name.toLowerCase()))
+                            .querySingle();
+                    return citySave != null && citySave.downloaded;
+                })
+                .doOnNext(forecast -> Log.i("Forecast1", forecast.city.name));
+    }
+    
+    public static Observable<Forecast> saveForecastAndStream(final Forecast forecast) {
+        saveForecastToDatabase(forecast);
+        return Observable.just(forecast);
+    }
+    
+    public static void saveForecastToDatabase(final Forecast forecast) {
+        String cityName = getCityNameFromUrl(forecast.downloadURL);
+        forecast.city.name = cityName.substring(0, 1)
+                .toUpperCase() + cityName.substring(1);
+        
+        List<Forecast> forecastList = SQLite.select()
+                .from(Forecast.class)
+                .where(Forecast_Table.city_id.eq(forecast.city.id))
+                .queryList();
+        for (Forecast forecast1 : forecastList) {
+            forecast1.delete();
+        }
+        
+        forecast.save();
+        CitySave getCity = SQLite.select()
+                .from(CitySave.class)
+                .where(CitySave_Table.cityName.eq(cityName))
+                .querySingle();
+        if (getCity != null) {
+            getCity.downloaded = true;
+            getCity.update();
+        } else {
+            CitySave citySave = new CitySave(forecast.city.name.trim()
+                    .toLowerCase(), true);
+            citySave.save();
+        }
+    }
+    
+    private static String getCityNameFromUrl(String url) {
+        String[] split = url.split("q=");
+        split = split[1].split("&");
+        return split[0].toLowerCase();
+    }
+    
 }
