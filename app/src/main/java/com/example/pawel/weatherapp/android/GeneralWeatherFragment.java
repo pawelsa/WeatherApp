@@ -3,6 +3,7 @@ package com.example.pawel.weatherapp.android;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ public class GeneralWeatherFragment extends Fragment implements GeneralWeatherIn
     
     private GeneralWeatherPresenter presenter;
     
+    private FloatingActionButton FAB;
     private RecyclerView forecastRecyclerView;
     private MainFragmentAdapter adapter;
     
@@ -54,25 +56,26 @@ public class GeneralWeatherFragment extends Fragment implements GeneralWeatherIn
         forecastRecyclerView = view.findViewById(R.id.brief_forecast);
         view.findViewById(R.id.FAB_add)
                 .setOnClickListener(v -> presenter.showAddLocalizationSheet(getActivity()));
+        //FAB = view.findViewById(R.id.FAB_add);
     }
     
     @Override
     public void onPause() {
-	    super.onPause();
-	    Log.i("Fragment", "Pause");
+        super.onPause();
+        Log.i("Fragment", "Pause");
     }
     
     @Override
     public void onStop() {
-	    super.onStop();
-	    presenter.onStop();
-	    Log.i("Fragment", "Stop");
+        super.onStop();
+        presenter.onStop();
+        Log.i("Fragment", "Stop");
     }
-	
-	@Override
-	public void addItemToAdapter(Forecast forecast) {
-		adapter.add(forecast);
-	}
+    
+    @Override
+    public void addItemToAdapter(Forecast forecast) {
+        adapter.add(forecast);
+    }
     
     @Override
     public void onDestroy() {

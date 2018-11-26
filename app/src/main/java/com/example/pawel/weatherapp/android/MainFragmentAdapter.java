@@ -3,6 +3,7 @@ package com.example.pawel.weatherapp.android;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +55,16 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
     }
     
     public void add(Forecast placeWeatherData) {
-        placeWeatherDataList.add(placeWeatherData);
-        notifyDataSetChanged();
+        if (placeWeatherDataList.contains(placeWeatherData)) {
+            Log.d("Contains", "YES");
+            int index = placeWeatherDataList.indexOf(placeWeatherData);
+            placeWeatherDataList.set(index, placeWeatherData);
+            notifyItemChanged(index);
+        } else {
+            Log.d("Contains", "NO");
+            placeWeatherDataList.add(placeWeatherData);
+            notifyItemInserted(placeWeatherDataList.size() - 1);
+        }
     }
     
     class CardViewHolder extends RecyclerView.ViewHolder {

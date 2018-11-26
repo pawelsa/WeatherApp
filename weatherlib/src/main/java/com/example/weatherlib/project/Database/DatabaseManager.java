@@ -1,28 +1,16 @@
 package com.example.weatherlib.project.Database;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.example.weatherlib.project.WeatherModel.City;
-import com.example.weatherlib.project.WeatherModel.Forecast;
-import com.example.weatherlib.project.WeatherModel.Forecast_Table;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 
 public class DatabaseManager {
     
     public static void init(Context context) {
         FlowManager.init(new FlowConfig.Builder(context).build());
     }
-    
+    /*
     public static boolean checkIFPlaceIsAlreadyInDatabase(City place) {
         CitySave citySave = SQLite.select()
                 .from(CitySave.class)
@@ -68,7 +56,7 @@ public class DatabaseManager {
                             .querySingle();
                     return citySave != null && citySave.downloaded;
                 })
-                .doOnNext(forecast -> Log.i("Forecast1", forecast.city.name));
+                *//*.doOnNext(forecast -> Log.i("Forecast1", forecast.city.name))*//*;
     }
     
     public static Observable<Forecast> saveForecastAndStream(final Forecast forecast) {
@@ -109,5 +97,5 @@ public class DatabaseManager {
         split = split[1].split("&");
         return split[0].toLowerCase();
     }
-    
+    */
 }

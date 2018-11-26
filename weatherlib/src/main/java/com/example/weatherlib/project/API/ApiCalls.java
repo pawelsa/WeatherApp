@@ -13,7 +13,7 @@ public interface ApiCalls {
 	@GET( "weather" )
 	Call<CurrentWeather> getWeather(@Query("q") String cityName,
 									@Query("units") String units,
-									@Query("APPID") String APIID);*/
+									@Query("APPID") String WEATHER_API_KEY);*/
 
 	@GET("forecast")
 	Observable<Response<Forecast>> getForecast(@Query( "q" ) String cityName,

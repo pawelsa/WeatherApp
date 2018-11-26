@@ -2,13 +2,7 @@ package com.example.pawel.weatherapp.android;
 
 import android.app.Application;
 
-import com.example.weatherlib.project.API.ForecastDownload;
-import com.example.weatherlib.project.API.PhotoDownload;
 import com.example.weatherlib.project.Database.DatabaseManager;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyApplication extends Application {
 
@@ -22,20 +16,18 @@ public class MyApplication extends Application {
 		super.onCreate();
 		
 		DatabaseManager.init(this);
+        
+        //ForecastDownload.setupDownloader(this, builder.build(), GOOGLE_API_KEY, APIID);
+        com.example.weatherlib.project.newVersion.ForecastDownload.setupDownloader(this, GOOGLE_API_KEY, APIID);
+        
+        com.example.weatherlib.project.newVersion.DatabaseManager.init(this);
 
-		Retrofit.Builder builder = new Retrofit.Builder()
-				.baseUrl("http://api.openweathermap.org/data/2.5/")
-				.addConverterFactory(GsonConverterFactory.create())
-				.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-		
-		ForecastDownload.setupDownloader(this, builder.build(), GOOGLE_API_KEY, APIID);
-
-		builder = new Retrofit.Builder()
+		/*builder = new Retrofit.Builder()
 				.baseUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/")
 				.addConverterFactory(GsonConverterFactory.create())
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
-		PhotoDownload.setupRetrofit(builder.build());
+		PhotoDownload.setupRetrofit(builder.build());*/
 
 	}
 }

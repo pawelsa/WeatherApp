@@ -1,28 +1,6 @@
 package com.example.weatherlib.project.API;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.example.weatherlib.project.Database.CitySave;
-import com.example.weatherlib.project.Database.CitySave_Table;
-import com.example.weatherlib.project.Database.DatabaseManager;
-import com.example.weatherlib.project.WeatherModel.City;
-import com.example.weatherlib.project.WeatherModel.Forecast;
-import com.orhanobut.hawk.Hawk;
-import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
-import java.sql.Timestamp;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static io.reactivex.Observable.just;
 
 public class ForecastDownload {
     
@@ -33,7 +11,7 @@ public class ForecastDownload {
     public static String GOOGLE_API_KEY;
     public static String APIID;
     private static Retrofit retrofit;
-    
+    /*
     private static PublishSubject<Forecast> downloadSubject = PublishSubject.create();
     
     public static void setupDownloader(Context context, Retrofit retrofit, String googleApiKey, String APIID) {
@@ -158,5 +136,5 @@ public class ForecastDownload {
     
     private static void setDownloadTimestamp() {
         Hawk.put(DOWNLOAD, new Timestamp(System.currentTimeMillis()));
-    }
+    }*/
 }
