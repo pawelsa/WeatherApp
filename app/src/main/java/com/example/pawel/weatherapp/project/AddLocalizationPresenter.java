@@ -2,11 +2,10 @@ package com.example.pawel.weatherapp.project;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.example.weatherlib.project.newVersion.ForecastDownload;
+import com.example.weatherlibwithcityphotos.MainLib;
 
 
 public class AddLocalizationPresenter {
@@ -29,8 +28,7 @@ public class AddLocalizationPresenter {
                 .setPositiveButton("Confirm", (dialog, which) -> {
                     final String cityName = input.getText()
                             .toString().trim();
-                    ForecastDownload.getForecast(cityName)
-                            .subscribe(forecast -> Log.d("Presenter", "Get : " + forecast.city.name + "  " + forecast.list.size()));
+                    MainLib.downloadNewForecastFor(cityName);
                 })
                 .setNegativeButton("cancel", (dialog, which) -> dialog.cancel());
         

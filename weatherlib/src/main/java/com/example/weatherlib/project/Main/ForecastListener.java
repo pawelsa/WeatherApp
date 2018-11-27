@@ -1,4 +1,4 @@
-package com.example.weatherlib.project.newVersion;
+package com.example.weatherlib.project.Main;
 
 import com.example.weatherlib.project.WeatherModel.Forecast;
 

@@ -1,12 +1,12 @@
 package com.example.weatherlib.project.WeatherModel;
 
-import com.example.weatherlib.project.Database.MyDatabase;
+import com.example.weatherlib.project.Database.ForecastDB;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-@Table(database = MyDatabase.class, name = "weatherTable", allFields = true)
+@Table( database = ForecastDB.class, name = "weatherTable", allFields = true )
 public class Weather extends BaseModel {
 	
 	@PrimaryKey( autoincrement = true )

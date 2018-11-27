@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">getPhotoForCity</string>
+    <string name="no_photo">There is no photo for this city</string>
+</resources>

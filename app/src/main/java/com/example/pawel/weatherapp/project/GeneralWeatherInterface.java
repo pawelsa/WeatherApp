@@ -1,9 +1,9 @@
 package com.example.pawel.weatherapp.project;
 
-import com.example.weatherlib.project.WeatherModel.Forecast;
+import com.example.weatherlibwithcityphotos.EForecast;
 
 public interface GeneralWeatherInterface {
-    
-    void addItemToAdapter(Forecast forecast);
+	
+	void addItemToAdapter(EForecast forecast);
     
 }

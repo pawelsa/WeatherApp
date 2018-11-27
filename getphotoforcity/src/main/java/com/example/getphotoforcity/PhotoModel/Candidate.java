@@ -1,11 +1,10 @@
 
-package com.example.weatherlib.project.PhotoModel;
+package com.example.getphotoforcity.PhotoModel;
 
 import java.util.List;
 
 public class Candidate {
 
-	public String id;
 	public String name;
 	public List<Photo> photos = null;
 

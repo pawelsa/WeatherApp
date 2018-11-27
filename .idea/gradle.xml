@@ -9,7 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/getphotoforcity" />
             <option value="$PROJECT_DIR$/weatherlib" />
+            <option value="$PROJECT_DIR$/weatherlibwithcityphotos" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

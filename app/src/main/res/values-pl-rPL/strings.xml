@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pogodynka</string>
+    <string name="city_name">Miasto</string>
+    <string name="add_new_localization">Dodaj nową lokalizację</string>
+    <string name="current_localization">Aktualna pozycja</string>
+    <string name="by_location_name">Nazwa miejsca</string>
+    <string name="hello_blank_fragment">Witaj pusty fragmencie</string>
+</resources>

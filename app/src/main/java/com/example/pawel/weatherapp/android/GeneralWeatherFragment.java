@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.project.GeneralWeatherInterface;
 import com.example.pawel.weatherapp.project.GeneralWeatherPresenter;
-import com.example.weatherlib.project.WeatherModel.Forecast;
+import com.example.weatherlibwithcityphotos.EForecast;
 
 
 public class GeneralWeatherFragment extends Fragment implements GeneralWeatherInterface {
@@ -58,6 +58,13 @@ public class GeneralWeatherFragment extends Fragment implements GeneralWeatherIn
                 .setOnClickListener(v -> presenter.showAddLocalizationSheet(getActivity()));
         //FAB = view.findViewById(R.id.FAB_add);
     }
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		presenter.onResume();
+		Log.i("Fragment", "Resume");
+	}
     
     @Override
     public void onPause() {
@@ -73,7 +80,7 @@ public class GeneralWeatherFragment extends Fragment implements GeneralWeatherIn
     }
     
     @Override
-    public void addItemToAdapter(Forecast forecast) {
+    public void addItemToAdapter(EForecast forecast) {
         adapter.add(forecast);
     }
     

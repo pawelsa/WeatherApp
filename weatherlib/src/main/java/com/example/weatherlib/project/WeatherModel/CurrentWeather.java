@@ -1,6 +1,6 @@
 package com.example.weatherlib.project.WeatherModel;
 
-import com.example.weatherlib.project.Database.MyDatabase;
+import com.example.weatherlib.project.Database.ForecastDB;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
@@ -11,7 +11,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.List;
 
-@Table( database = MyDatabase.class, name = "currentWeatherTable" )
+@Table( database = ForecastDB.class, name = "currentWeatherTable" )
 public class CurrentWeather
 		extends BaseModel {
 	
