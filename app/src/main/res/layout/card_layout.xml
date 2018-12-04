@@ -28,10 +28,11 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:background="@drawable/city_building"
                     android:id="@+id/iv_card_cityNameBackground"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:background="@color/colorAccent"
+                    android:contentDescription="@string/city_landscape"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
