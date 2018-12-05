@@ -36,17 +36,22 @@ public class ForecastStreams {
 	}
 	
 	private static Flowable<Forecast> getStartLoadingForecastStream() {
-		return Flowable.just(0)
-				.doOnNext(integer -> ListenerManager.isLoadingListener(true))
-				.subscribeOn(Schedulers.io())
+		return getStartLoadingStream()
 				.flatMap(integer -> DatabaseManager.getForecasts());
+	}
+	
+	private static Flowable<Forecast> getStartLoadingStream() {
+		return Flowable.just(0)
+				.doOnNext(start -> ListenerManager.isLoadingListener(true))
+				.observeOn(Schedulers.io())
+				.map(integer -> new Forecast());
 	}
 	
 	private static Flowable<Forecast> getRefreshingForecastStream(Flowable<Forecast> entryFlowable) {
 		return entryFlowable
 				.flatMap(forecast -> ForecastDownload.getForecastRequest(forecast.city.name, USED_UNIT)
 						.subscribeOn(Schedulers.io())
-                        .onErrorResumeNext(Flowable.just(forecast)));
+						.onErrorResumeNext(Flowable.just(forecast)));
 	}
 	
 	private static Disposable getLoadingDisposable(Flowable<Forecast> forecastStream) {
@@ -58,7 +63,8 @@ public class ForecastStreams {
 	}
 	
 	static void downloadNewForecastFor(String cityName) {
-		disposables.add(getLoadingDisposable(ForecastDownload.downloadNewForecastFor(cityName)));
+		disposables.add(getLoadingDisposable(ForecastDownload.downloadNewForecastFor(getStartLoadingStream(),
+		                                                                             cityName)));
 	}
 	
 	static void downloadDataForNewUnits() {

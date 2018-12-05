@@ -5,5 +5,7 @@ import com.example.weatherlibwithcityphotos.EForecast;
 public interface GeneralWeatherInterface {
 	
 	void addItemToAdapter(EForecast forecast);
+	
+	void isRefreshing(boolean refresh);
     
 }

@@ -41,9 +41,6 @@ public class MainFragmentAdapter
 	public CardViewHolderNoCity onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		context = parent.getContext();
 		
-		/*   TODO spróbować zrobić jeden layout dla obu i potem tylko podmienic element wyświetlania pogody
-		 *  może to nie ma sensu, ew head przenieść */
-		
 		View v;
 		if ( viewType == ONLINE ) {
 			v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
@@ -76,7 +73,6 @@ public class MainFragmentAdapter
 		return placeWeatherDataList.size();
 	}
 	
-	/*   TODO dubluje jesli dodane miasto w offline i pobrane w online   */
 	public void add(EForecast placeWeatherData) {
 		if ( placeWeatherDataList.contains(placeWeatherData) ) {
 			Log.d("Contains", "YES");
@@ -180,17 +176,19 @@ public class MainFragmentAdapter
 			builder.setTitle(context.getText(R.string.dialog_make_sure))
 					.setMessage(String.format(context.getString(R.string.dialog_remove_content), cityName))
 					.setPositiveButton(context.getString(android.R.string.ok),
-					                   (dialog, which) -> {
-						                   boolean removed = MainLib.removeForecastFor(cityID, cityName);
-						                   if ( removed ) {
-							                   placeWeatherDataList.remove(position);
-							                   notifyItemRemoved(position);
-							                   notifyDataSetChanged();
-						                   }
-					                   })
+					                   (dialog, which) -> removeForecast(cityID, cityName))
 					.setNegativeButton(context.getText(android.R.string.cancel), ((dialog, which) -> dialog.cancel()));
 			
 			builder.show();
+		}
+		
+		private void removeForecast(int cityID, String cityName) {
+			boolean removed = MainLib.removeForecastFor(cityID, cityName);
+			if ( removed ) {
+				placeWeatherDataList.remove(position);
+				notifyItemRemoved(position);
+				notifyDataSetChanged();
+			}
 		}
 	}
 	

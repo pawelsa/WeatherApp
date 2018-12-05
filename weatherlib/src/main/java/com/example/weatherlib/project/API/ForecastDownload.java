@@ -7,7 +7,6 @@ import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import io.reactivex.Flowable;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,13 +24,14 @@ public class ForecastDownload {
 			.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 	
 	
-	public static Flowable<Forecast> downloadNewForecastFor(String cityName) {
+	public static Flowable<Forecast> downloadNewForecastFor(Flowable<Forecast> startStream, String cityName) {
 		Forecast newAdded = addNewCityToNotDownloaded(cityName);
-		/*   TODO wyślij najpierw pusty obiekt, a potem pobrany   */
-		/*   TODO niektóre modele nie są przypisane do konkretnej pogody   */
-		return getForecastRequest(cityName, WeatherLib.USED_UNIT)
-				.onErrorReturnItem(newAdded)
-				.subscribeOn(Schedulers.io());
+		
+		return startStream
+				.flatMap(start -> Flowable.range(1, 2)
+						.flatMap(integer -> integer == 1 ? Flowable.just(newAdded)
+						                                 : getForecastRequest(cityName, WeatherLib.USED_UNIT)
+								                    .onErrorResumeNext(Flowable.empty())));
 	}
 	
 	public static Flowable<Forecast> getForecastRequest(String cityName, String units) {

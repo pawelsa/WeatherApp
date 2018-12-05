@@ -11,9 +11,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', "GoogleApiKey", WeatherApp_GoogleApiKey
+            buildConfigField 'String', "WEATHER_API_KEY", WeatherApp_WEATHER_API_KEY
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "GoogleApiKey", WeatherApp_GoogleApiKey
+            buildConfigField 'String', "WEATHER_API_KEY", WeatherApp_WEATHER_API_KEY
         }
     }
     allprojects {

@@ -20,6 +20,7 @@ public class WeatherLib {
 	public static String USED_UNIT;
 	
 	/*   TODO sprawdzic czy jest sprawdzany  status okna pause restart  */
+	/*   TODO niektóre modele nie są przypisane do konkretnej pogody   */
 	public static void setupWeatherLib(Context context, String weatherApiKey) {
 		
 		WEATHER_API_KEY = weatherApiKey;

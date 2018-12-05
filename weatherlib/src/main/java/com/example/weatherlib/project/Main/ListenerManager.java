@@ -1,13 +1,11 @@
 package com.example.weatherlib.project.Main;
 
-import android.util.Log;
-
 import com.example.weatherlib.project.WeatherModel.Forecast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListenerManager {
+class ListenerManager {
 	
 	private static List<ForecastListener> listeners = new ArrayList<>();
 	
@@ -15,12 +13,10 @@ public class ListenerManager {
 		if ( ! listeners.contains(listener) ) {
 			listeners.add(listener);
 		}
-		Log.d("Listener", "Added, size : " + listeners.size());
 	}
 	
 	static void removeListener(ForecastListener listener) {
 		listeners.remove(listener);
-		Log.d("Listener", "Removed, size : " + listeners.size());
 	}
 	
 	static void onSuccessListener(Forecast forecast) {
