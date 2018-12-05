@@ -86,7 +86,7 @@ public class Forecast
 		
 		if ( obj instanceof Forecast ) {
 			Forecast other = ( Forecast ) obj;
-			result = this.ID == other.ID;
+			result = this.ID == other.ID || this.city.name.equals(other.city.name);
 		}
 		return result;
 	}

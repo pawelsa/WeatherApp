@@ -65,7 +65,7 @@ public class DatabaseManager {
 				});
 	}
 	
-	public static void addNewCityToNotDownloaded(String cityName) {
+	public static Forecast addNewCityToNotDownloaded(String cityName) {
 		
 		int newID = Hawk.get(NOT_DOWNLOADED_IDS, - 1);
 		Forecast forecast = new Forecast();
@@ -75,6 +75,7 @@ public class DatabaseManager {
 		forecast.save();
 		Log.d("City", "Add : " + forecast.city.name + " with ID : " + forecast.city.id);
 		Hawk.put(NOT_DOWNLOADED_IDS, -- newID);
+		return forecast;
 	}
 	
 	public static void removeNotExistentCity(String cityName) {
@@ -88,5 +89,33 @@ public class DatabaseManager {
 				forecast.delete();
 			}
 		}
+	}
+	
+	public static boolean removeCity(String cityName) {
+		boolean result = false;
+		
+		List<Forecast> forecastMatch = SQLite.select()
+				.from(Forecast.class)
+				.where(Forecast_Table.city_name.eq(cityName))
+				.queryList();
+		
+		for ( Forecast forecast : forecastMatch ) {
+			result = forecast.delete();
+		}
+		return result;
+	}
+	
+	public static boolean removeCity(int cityID) {
+		boolean result = false;
+		
+		List<Forecast> forecastMatch = SQLite.select()
+				.from(Forecast.class)
+				.where(Forecast_Table.city_id.eq(cityID))
+				.queryList();
+		
+		for ( Forecast forecast : forecastMatch ) {
+			result = forecast.delete();
+		}
+		return result;
 	}
 }

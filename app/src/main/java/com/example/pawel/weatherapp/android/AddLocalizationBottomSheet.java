@@ -27,9 +27,16 @@ public class AddLocalizationBottomSheet extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.bs_add_localization, container, false);
         
         presenter = new AddLocalizationPresenter(inflater.getContext());
-        v.findViewById(R.id.cl_newLocalization_createByName)
-                .setOnClickListener(view -> presenter.buildAlertDialog()
-                        .show());
-        return v;
+	    return v;
     }
+	
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		
+		view.findViewById(R.id.cl_newLocalization_createByName)
+				.setOnClickListener(v -> presenter.buildAlertDialog()
+                        .show());
+		
+	}
 }

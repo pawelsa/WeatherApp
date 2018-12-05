@@ -26,9 +26,11 @@ public class ForecastDownload {
 	
 	
 	public static Flowable<Forecast> downloadNewForecastFor(String cityName) {
-		addNewCityToNotDownloaded(cityName);
-		
+		Forecast newAdded = addNewCityToNotDownloaded(cityName);
+		/*   TODO wyślij najpierw pusty obiekt, a potem pobrany   */
+		/*   TODO niektóre modele nie są przypisane do konkretnej pogody   */
 		return getForecastRequest(cityName, WeatherLib.USED_UNIT)
+				.onErrorReturnItem(newAdded)
 				.subscribeOn(Schedulers.io());
 	}
 	

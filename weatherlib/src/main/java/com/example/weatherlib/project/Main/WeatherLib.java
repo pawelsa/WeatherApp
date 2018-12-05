@@ -3,6 +3,7 @@ package com.example.weatherlib.project.Main;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.example.weatherlib.project.Database.DatabaseManager;
 import com.example.weatherlib.project.Tools.Units;
 import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -27,7 +28,6 @@ public class WeatherLib {
 				.build();
 		
 		resources = context.getResources();
-		
 		USED_UNIT = Hawk.get(UNITS, Units.METRIC.name());
 	}
 	
@@ -45,6 +45,14 @@ public class WeatherLib {
 	
 	public static void downloadNewForecastFor(String cityName) {
 		ForecastStreams.downloadNewForecastFor(cityName);
+	}
+	
+	public static boolean removeForecastFor(String cityName) {
+		return DatabaseManager.removeCity(cityName);
+	}
+	
+	public static boolean removeForecastFor(int cityID) {
+		return DatabaseManager.removeCity(cityID);
 	}
 	
 	public static void refreshForecast() {

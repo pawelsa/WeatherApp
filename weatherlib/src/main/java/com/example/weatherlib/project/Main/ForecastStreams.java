@@ -46,13 +46,11 @@ public class ForecastStreams {
 		return entryFlowable
 				.flatMap(forecast -> ForecastDownload.getForecastRequest(forecast.city.name, USED_UNIT)
 						.subscribeOn(Schedulers.io())
-                        //.onErrorResumeNext(Flowable.empty()));
                         .onErrorResumeNext(Flowable.just(forecast)));
 	}
 	
 	private static Disposable getLoadingDisposable(Flowable<Forecast> forecastStream) {
 		return forecastStream
-                //.filter(Forecast::isDownloaded)
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(ListenerManager::onSuccessListener,
 				           ListenerManager::onErrorListener,

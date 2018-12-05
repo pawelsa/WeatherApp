@@ -27,6 +27,10 @@ public class PhotoDownload {
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
 	}
 	
+	public static void removePhotoFor(String cityName) {
+		Hawk.delete(cityName);
+	}
+	
 	public static Single<String> getPhoto(String cityName) {
 		return Single.fromCallable(() -> Hawk.get(cityName, "-1"))
 				.flatMap(s -> {

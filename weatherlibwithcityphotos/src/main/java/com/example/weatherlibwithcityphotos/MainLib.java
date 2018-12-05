@@ -15,10 +15,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 public class MainLib {
+	
 	private static Disposable disposable;
-	/*   TODO sprawdzic czy jest sprawdzany  status okna pause restart  */
-	/*   TODO ma łączyć pogodę z zdjęciami   */
-	/*   TODO zapisywanie zdjęć do bazy danych i w listnerze on success musi konwertować zwykły forecast na eforecast i wysyłać   */
+	
 	private static final ForecastListener forecastListener = getForecastListener();
 	
 	public static void setup(Context context, String weatherApiKey, String googleApiKey) {
@@ -40,6 +39,15 @@ public class MainLib {
 		WeatherLib.downloadNewForecastFor(cityName);
 	}
 	
+	public static boolean removeForecastFor(String cityName) {
+		return WeatherLib.removeForecastFor(cityName);
+	}
+	
+	public static boolean removeForecastFor(int cityID, String cityName) {
+		PhotoDownload.removePhotoFor(cityName);
+		return WeatherLib.removeForecastFor(cityID);
+	}
+	
 	public static void refreshForecast() {
 		WeatherLib.refreshForecast();
 	}
@@ -59,7 +67,7 @@ public class MainLib {
 		ListenersManager.removeListener(listener);
 	}
 	
-	private static final ForecastListener getForecastListener() {
+	private static ForecastListener getForecastListener() {
 		return new ForecastListener() {
 			@Override
 			public void onSuccess(Forecast forecast) {

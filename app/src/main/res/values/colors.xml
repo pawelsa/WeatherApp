@@ -6,4 +6,12 @@
     <color name="white">#FFF</color>
     <color name="dark_grey">#9e9e9e</color>
     <color name="darker_grey">#757575</color>
+    <color name="accent_material_light">#ef5350</color>
+    <color name="background_material_light">#eeeeee</color>
+    <color name="card_background_material_light">#F5F5F5</color>
+    <color name="text_color_primary">#424242</color>
+    <color name="icon_color">#ef5350</color>
+    <color name="text_headline">#D9000000</color>
+    <color name="text_content">#99000000</color>
+    <color name="text_hint">#66000000</color>
 </resources>
