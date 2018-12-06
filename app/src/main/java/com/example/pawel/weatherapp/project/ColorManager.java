@@ -1,7 +1,8 @@
 package com.example.pawel.weatherapp.project;
 
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
+
+import androidx.annotation.ColorInt;
 
 public class ColorManager {
 

@@ -1,10 +1,6 @@
 package com.example.pawel.weatherapp.android;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +18,11 @@ import com.example.weatherlibwithcityphotos.MainLib;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainFragmentAdapter
 		extends RecyclerView.Adapter<MainFragmentAdapter.CardViewHolderNoCity> {

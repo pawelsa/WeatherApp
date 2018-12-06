@@ -1,12 +1,13 @@
 package com.example.pawel.weatherapp.project;
 
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.example.pawel.weatherapp.android.AddLocalizationBottomSheet;
 import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
 import com.example.weatherlibwithcityphotos.MainLib;
+
+import androidx.fragment.app.FragmentActivity;
 
 public class GeneralWeatherPresenter {
 	

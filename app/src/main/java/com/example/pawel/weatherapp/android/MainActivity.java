@@ -1,9 +1,10 @@
 package com.example.pawel.weatherapp.android;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.pawel.weatherapp.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
