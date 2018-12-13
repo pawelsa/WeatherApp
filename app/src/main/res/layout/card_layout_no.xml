@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_forecast_offline"
+    <data>
+
+        <variable
+            name="forecast"
+            type="com.example.weatherlibwithcityphotos.EForecast" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="10dp"
-        app:cardBackgroundColor="@color/card_background_material_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_forecast_online"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="10dp"
+            app:cardBackgroundColor="@color/card_background_material_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/city_not_downloaded"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fl_card_cityBackground" />
-
-            <FrameLayout
-                android:id="@+id/fl_card_cityBackground"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_card_cityNameBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:background="@drawable/city_building"
-                    android:contentDescription="@string/city_landscape"
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/city_not_downloaded"
+                    android:textSize="36sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/fl_card_cityBackground" />
 
-                </ImageView>
-
-                <View
-                    android:id="@+id/v_card_gradient"
+                <FrameLayout
+                    android:id="@+id/fl_card_cityBackground"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:background="@drawable/gradient_city_name" />
-            </FrameLayout>
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_card_cityNameBackground"
+                        imageUrl="@{forecast.photoReference}"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:background="@drawable/city_building"
+                        android:contentDescription="@string/city_landscape"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>
+
+                    <View
+                        android:id="@+id/v_card_gradient"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:background="@drawable/gradient_city_name" />
+                </FrameLayout>
 
 
-            <TextView
-                android:id="@+id/tv_card_cityName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/city_name"
-                android:textColor="@color/white"
-                android:textSize="45sp"
-                app:layout_constraintBottom_toBottomOf="@+id/fl_card_cityBackground"
-                app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/tv_card_cityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{forecast.cityName}"
+                    android:textColor="@color/white"
+                    android:textSize="45sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_card_cityBackground"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

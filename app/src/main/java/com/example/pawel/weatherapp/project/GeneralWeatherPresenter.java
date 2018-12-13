@@ -28,18 +28,18 @@ public class GeneralWeatherPresenter {
 		listener = new ForecastsListener() {
 			@Override
 			public void onSuccess(EForecast forecast) {
-				Log.d("Presenter", "Forecast for : " + forecast.city.name + " " + Thread.currentThread().getName());
+				Log.d("Presenter", "Forecast for : " + forecast.city.name);
 				view.addItemToAdapter(forecast);
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				Log.d("Presenter", "Error : " + t.getMessage() + " " + Thread.currentThread().getName());
+				Log.d("Presenter", "Error : " + t.getMessage());
 			}
 			
 			@Override
 			public void isLoading(boolean loading) {
-				Log.d("Presenter", "Loading : " + String.valueOf(loading) + " " + Thread.currentThread().getName());
+				Log.d("Presenter", "Loading : " + String.valueOf(loading));
 				view.isRefreshing(loading);
 			}
 		};

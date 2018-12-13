@@ -5,14 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.pawel.weatherapp.R;
-import com.example.weatherlib.project.WeatherModel.CurrentWeather;
+import com.example.pawel.weatherapp.databinding.CardLayoutBinding;
+import com.example.pawel.weatherapp.databinding.CardLayoutNoBinding;
 import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.MainLib;
 
@@ -21,11 +17,13 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainFragmentAdapter
-		extends RecyclerView.Adapter<MainFragmentAdapter.CardViewHolderNoCity> {
+		extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	
 	private final int ONLINE = 1;
 	private final int OFFLINE = 0;
@@ -39,34 +37,35 @@ public class MainFragmentAdapter
 	
 	@NonNull
 	@Override
-	public CardViewHolderNoCity onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		context = parent.getContext();
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		
-		View v;
-		if ( viewType == ONLINE ) {
-			v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
-			return new CardViewHolder(v);
-		} else {
-			v = LayoutInflater.from(parent.getContext())
-					.inflate(R.layout.card_layout_no, parent, false);
-			return new CardViewHolderNoCity(v);
+		return viewType == ONLINE
+		       ? new CardViewHolderNoCity(CardLayoutBinding.inflate(LayoutInflater.from(parent.getContext()),
+		                                                            parent,
+		                                                            false))
+		       : new CardViewHolderNoCity(CardLayoutNoBinding.inflate(LayoutInflater.from(parent.getContext()),
+		                                                              parent,
+		                                                              false));
+	}
+	
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		if ( holder instanceof CardViewHolderNoCity ) {
+			CardViewHolderNoCity viewHolderCity = ( CardViewHolderNoCity ) holder;
+			viewHolderCity.bind(position);
 		}
 	}
 	
 	@Override
-	public void onBindViewHolder(@NonNull CardViewHolderNoCity holder, int position) {
-		holder.bind(position);
+	public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+		super.onAttachedToRecyclerView(recyclerView);
+		context = recyclerView.getContext();
 	}
 	
 	@Override
 	public int getItemViewType(int position) {
 		return placeWeatherDataList.get(position)
 				       .isDownloaded() ? ONLINE : OFFLINE;
-	}
-	
-	@Override
-	public long getItemId(int position) {
-		return position;
 	}
 	
 	@Override
@@ -87,95 +86,43 @@ public class MainFragmentAdapter
 		}
 	}
 	
-	class CardViewHolder
-			extends CardViewHolderNoCity {
-		
-		SeekBar sbTime;
-		TextView tvTemp;
-		TextView tvDescription;
-		TextView tvHumidity;
-		TextView tvWind;
-		ImageView ivWeatherIcon;
-		
-		CardViewHolder(View itemView) {
-			super(itemView);
-			ivWeatherIcon = itemView.findViewById(R.id.iv_card_weatherIcon);
-			sbTime = itemView.findViewById(R.id.sb_card_time);
-			tvTemp = itemView.findViewById(R.id.tv_card_temp);
-			tvDescription = itemView.findViewById(R.id.tv_card_description);
-			tvHumidity = itemView.findViewById(R.id.tv_card_humidity);
-			tvWind = itemView.findViewById(R.id.tv_card_wind);
-			cvCard = itemView.findViewById(R.id.card_forecast_online);
-		}
-		
-		void bind(int position) {
-			super.bind(position);
-			updateWeatherInfo(item.list.get(0));
-			sbTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-				@Override
-				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-					updateWeatherInfo(item.list.get(progress));
-				}
-				
-				@Override
-				public void onStartTrackingTouch(SeekBar seekBar) {
-				
-				}
-				
-				@Override
-				public void onStopTrackingTouch(SeekBar seekBar) {
-				
-				}
-			});
-		}
-		
-		void updateWeatherInfo(CurrentWeather weather) {
-			tvTemp.setText(String.valueOf(weather.main.temp));
-			tvDescription.setText(weather.weather.get(0).description);
-			tvHumidity.setText(String.valueOf(weather.main.humidity));
-			tvWind.setText(String.valueOf(weather.wind.speed));
-		}
-	}
-	
 	class CardViewHolderNoCity
 			extends RecyclerView.ViewHolder {
 		
 		int position;
-		EForecast item;
+		CardLayoutNoBinding noBinding = null;
+		CardLayoutBinding binding = null;
 		
-		TextView tvCityName;
-		ImageView ivBackground;
-		CardView cvCard;
+		CardViewHolderNoCity(CardLayoutNoBinding itemView) {
+			super(itemView.getRoot());
+			this.noBinding = itemView;
+		}
 		
-		CardViewHolderNoCity(View itemView) {
-			super(itemView);
-			tvCityName = itemView.findViewById(R.id.tv_card_cityName);
-			ivBackground = itemView.findViewById(R.id.iv_card_cityNameBackground);
-			cvCard = itemView.findViewById(R.id.card_forecast_offline);
+		CardViewHolderNoCity(CardLayoutBinding itemView) {
+			super(itemView.getRoot());
+			this.binding = itemView;
 		}
 		
 		void bind(int position) {
 			this.position = position;
-			item = placeWeatherDataList.get(this.position);
-			
-			if ( item.photoReference != null ) {
-				Glide.with(context)
-						.load(item.photoReference)
-						.apply(new RequestOptions().centerCrop())
-						.into(ivBackground);
-			}
-			tvCityName.setText(item.city.name);
-			
-			cvCard.setOnLongClickListener(v -> {
+			EForecast item = placeWeatherDataList.get(position);
+			View.OnLongClickListener removeListener = v -> {
 				displayDialog(item.ID, item.city.name);
 				return false;
-			});
+			};
+			if ( noBinding != null ) {
+				noBinding.setForecast(item);
+				noBinding.cardForecastOnline.setOnLongClickListener(removeListener);
+			} else {
+				binding.setForecast(item);
+				binding.cardForecastOnline.setOnLongClickListener(removeListener);
+			}
 		}
 		
 		private void displayDialog(int cityID, String cityName) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setTitle(context.getText(R.string.dialog_make_sure))
-					.setMessage(String.format(context.getString(R.string.dialog_remove_content), cityName))
+			builder.setTitle(context.getText(R.string.dialog_remove_city_make_sure))
+					.setMessage(String.format(context.getString(R.string.dialog_remove_city_content), cityName))
 					.setPositiveButton(context.getString(android.R.string.ok),
 					                   (dialog, which) -> removeForecast(cityID, cityName))
 					.setNegativeButton(context.getText(android.R.string.cancel), ((dialog, which) -> dialog.cancel()));
@@ -184,12 +131,15 @@ public class MainFragmentAdapter
 		}
 		
 		private void removeForecast(int cityID, String cityName) {
-			boolean removed = MainLib.removeForecastFor(cityID, cityName);
-			if ( removed ) {
-				placeWeatherDataList.remove(position);
-				notifyItemRemoved(position);
-				notifyDataSetChanged();
-			}
+			Observable.fromCallable(() -> MainLib.removeForecastFor(cityID, cityName))
+					.filter(result -> result).subscribeOn(Schedulers.io())
+					.observeOn(AndroidSchedulers.mainThread())
+					.flatMap(result -> {
+						placeWeatherDataList.remove(position);
+						notifyItemRemoved(position);
+						notifyDataSetChanged();
+						return Observable.empty();
+					}).subscribe();
 		}
 	}
 	

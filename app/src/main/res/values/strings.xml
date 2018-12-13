@@ -7,12 +7,11 @@
     <string name="current_localization">Current Location</string>
     <string name="by_location_name">Location Name</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="city_not_downloaded">Not Downloaded</string>
     <string name="city_landscape">City Landscape</string>
-    <string name="enter_city_name">City name</string>
-    <string name="dialog_confirm">CONFIRM</string>
-    <string name="dialog_make_sure">Are you sure ? </string>
-    <string name="dialog_remove_content">Do your really want to remove %1$s from your list ?</string>
+    <string name="dialog_new_city_editText">City name</string>
+    <string name="dialog_new_city_headline">Enter city name</string>
+    <string name="dialog_remove_city_confirm">CONFIRM</string>
+    <string name="dialog_remove_city_make_sure">Are you sure ? </string>
+    <string name="dialog_remove_city_content">Do your really want to remove %1$s from your list ?</string>
 </resources>

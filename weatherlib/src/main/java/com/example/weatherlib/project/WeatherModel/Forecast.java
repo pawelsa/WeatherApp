@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.text.Collator;
 import java.util.List;
 
 @Table( database = ForecastDB.class, name = "forecastTable" )
@@ -86,7 +87,11 @@ public class Forecast
 		
 		if ( obj instanceof Forecast ) {
 			Forecast other = ( Forecast ) obj;
-			result = this.ID == other.ID || this.city.name.equals(other.city.name);
+			
+			Collator instance = Collator.getInstance();
+			instance.setStrength(Collator.NO_DECOMPOSITION);
+			int equalName = instance.compare(this.city.name, other.city.name);
+			result = this.ID == other.ID || equalName == 0;
 		}
 		return result;
 	}

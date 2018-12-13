@@ -5,11 +5,11 @@
     <string name="add_new_localization">DODAJ NOWE MIEJSCE</string>
     <string name="current_localization">Aktualna pozycja</string>
     <string name="by_location_name">Nazwa miejsca</string>
-    <string name="hello_blank_fragment">Witaj pusty fragmencie</string>
     <string name="city_not_downloaded">Nie pobrano</string>
     <string name="city_landscape">Panorama miasta</string>
-    <string name="enter_city_name">Nazwa miasta</string>
-    <string name="dialog_confirm">POTWIERDŹ</string>
-    <string name="dialog_make_sure">Jesteś pewien/na ?</string>
-    <string name="dialog_remove_content">Czy na pewno chcesz usunąć %1$s z twojej listy ?</string>
+    <string name="dialog_new_city_editText">Nazwa miasta</string>
+    <string name="dialog_remove_city_confirm">POTWIERDŹ</string>
+    <string name="dialog_remove_city_make_sure">Jesteś pewien/na ?</string>
+    <string name="dialog_remove_city_content">Czy na pewno chcesz usunąć %1$s z twojej listy ?</string>
+    <string name="dialog_new_city_headline">Wprowadź nazwę miasta</string>
 </resources>

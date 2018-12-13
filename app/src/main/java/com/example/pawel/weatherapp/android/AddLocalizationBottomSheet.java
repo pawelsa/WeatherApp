@@ -36,8 +36,7 @@ public class AddLocalizationBottomSheet extends BottomSheetDialogFragment {
 		super.onViewCreated(view, savedInstanceState);
 		
 		view.findViewById(R.id.cl_newLocalization_createByName)
-				.setOnClickListener(v -> presenter.buildAlertDialog()
-                        .show());
+				.setOnClickListener(v -> presenter.showAddNewCityAlertDialog());
 		
 	}
 }
