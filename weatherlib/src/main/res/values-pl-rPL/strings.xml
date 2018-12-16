@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Pogodynka</string>
     <string name="city_does_not_exists">Nie ma takiego miasta</string>
+    <string name="no_internet_connection">Nie ma połączenia internetowego</string>
 </resources>

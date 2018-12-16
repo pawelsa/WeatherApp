@@ -3,6 +3,7 @@ package com.example.pawel.weatherapp.project;
 import android.util.Log;
 
 import com.example.pawel.weatherapp.android.AddLocalizationBottomSheet;
+import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
 import com.example.weatherlibwithcityphotos.MainLib;
@@ -13,13 +14,14 @@ public class GeneralWeatherPresenter {
 	
 	private ForecastsListener listener;
 	private GeneralWeatherInterface view;
+    private AddLocalizationBottomSheet bottomSheet;
 	
 	public GeneralWeatherPresenter(GeneralWeatherInterface view) {
 		this.view = view;
 	}
 	
 	public void showAddLocalizationSheet(FragmentActivity activity) {
-		AddLocalizationBottomSheet bottomSheet = new AddLocalizationBottomSheet();
+        bottomSheet = new AddLocalizationBottomSheet();
 		bottomSheet.show(activity.getSupportFragmentManager(), bottomSheet.getTag());
 	}
 	
@@ -35,6 +37,9 @@ public class GeneralWeatherPresenter {
 			@Override
 			public void onError(Throwable t) {
 				Log.d("Presenter", "Error : " + t.getMessage());
+                view.showSnackbar(t.getMessage());
+                view.isRefreshing(false);
+                t.printStackTrace();
 			}
 			
 			@Override
@@ -42,7 +47,13 @@ public class GeneralWeatherPresenter {
 				Log.d("Presenter", "Loading : " + String.valueOf(loading));
 				view.isRefreshing(loading);
 			}
-		};
+            
+            @Override
+            public void removedForecast(Forecast forecast) {
+                Log.d("Presenter", "Remove : " + forecast.city.name);
+                view.removeForecastFromAdapter(forecast);
+            }
+        };
 		MainLib.addListener(listener);
 		MainLib.streamForecastsWithRefresh();
 	}

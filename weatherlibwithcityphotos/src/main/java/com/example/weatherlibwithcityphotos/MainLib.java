@@ -1,6 +1,6 @@
 package com.example.weatherlibwithcityphotos;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.example.getphotoforcity.PhotoDownload;
 import com.example.weatherlib.project.Main.ForecastListener;
@@ -8,7 +8,6 @@ import com.example.weatherlib.project.Main.ForecastStreams;
 import com.example.weatherlib.project.Main.WeatherLib;
 import com.example.weatherlib.project.Tools.Units;
 import com.example.weatherlib.project.WeatherModel.Forecast;
-import com.orhanobut.hawk.Hawk;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,12 +18,11 @@ public class MainLib {
 	private static Disposable disposable;
 	
 	private static final ForecastListener forecastListener = getForecastListener();
-	
-	public static void setup(Context context, String weatherApiKey, String googleApiKey) {
-		Hawk.init(context).build();
-		WeatherLib.setupWeatherLib(context, weatherApiKey);
+    
+    public static void setup(Activity activity, String weatherApiKey, String googleApiKey) {
+        WeatherLib.setupWeatherLib(activity, weatherApiKey);
 		WeatherLib.addListener(forecastListener);
-		PhotoDownload.setup(context, googleApiKey);
+        PhotoDownload.setup(activity, googleApiKey);
 	}
 	
 	public static void useUnits(Units units) {
@@ -34,18 +32,18 @@ public class MainLib {
 	public static void streamForecastsWithRefresh() {
 		WeatherLib.streamForecastsWithRefresh();
 	}
+    
+    public static void downloadNewForecastFromLocalization() {
+        WeatherLib.downloadNewForecastFromLocalization();
+    }
 	
 	public static void downloadNewForecastFor(String cityName) {
 		WeatherLib.downloadNewForecastFor(cityName);
 	}
-	
-	public static boolean removeForecastFor(String cityName) {
-		return WeatherLib.removeForecastFor(cityName);
-	}
-	
-	public static boolean removeForecastFor(int cityID, String cityName) {
-		PhotoDownload.removePhotoFor(cityName);
-		return WeatherLib.removeForecastFor(cityID);
+    
+    public static void removeForecastFor(Forecast forecast) {
+        PhotoDownload.removePhotoFor(forecast.city.name);
+        WeatherLib.removeForecastFor(forecast);
 	}
 	
 	public static void refreshForecast() {
@@ -91,6 +89,11 @@ public class MainLib {
 			public void isLoading(boolean loading) {
 				ListenersManager.isLoadingListener(loading);
 			}
+            
+            @Override
+            public void removedForecast(Forecast forecast) {
+                ListenersManager.removedCityListener(forecast);
+            }
 		};
 	}
 }

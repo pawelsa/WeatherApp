@@ -50,4 +50,9 @@ public class EForecast
 	public String getCityName() {
 		return this.city.name;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
 }

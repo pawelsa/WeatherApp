@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.project.GeneralWeatherInterface;
 import com.example.pawel.weatherapp.project.GeneralWeatherPresenter;
+import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.example.weatherlibwithcityphotos.EForecast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,4 +103,15 @@ public class GeneralWeatherFragment
 	public void isRefreshing(boolean refresh) {
 		refreshLayout.setRefreshing(refresh);
 	}
+    
+    @Override
+    public void removeForecastFromAdapter(Forecast forecast) {
+        adapter.removeCity(forecast);
+    }
+    
+    @Override
+    public void showSnackbar(String message) {
+        Snackbar snackbar = Snackbar.make(refreshLayout, message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
 }

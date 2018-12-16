@@ -5,7 +5,7 @@ import com.example.weatherlib.project.WeatherModel.Forecast;
 import java.util.ArrayList;
 import java.util.List;
 
-class ListenerManager {
+public class ListenerManager {
 	
 	private static List<ForecastListener> listeners = new ArrayList<>();
 	
@@ -25,7 +25,7 @@ class ListenerManager {
 		}
 	}
 	
-	static void onErrorListener(Throwable throwable) {
+	public static void onErrorListener(Throwable throwable) {
 		for ( ForecastListener listener : listeners ) {
 			listener.onError(throwable);
 		}
@@ -34,6 +34,12 @@ class ListenerManager {
 	static void isLoadingListener(boolean isLoading) {
 		for ( ForecastListener listener : listeners ) {
 			listener.isLoading(isLoading);
+		}
+	}
+	
+	public static void removedCityListener(Forecast forecast) {
+		for (ForecastListener listener : listeners) {
+			listener.removedForecast(forecast);
 		}
 	}
 	

@@ -2,6 +2,8 @@ package com.example.weatherlibwithcityphotos;
 
 import android.util.Log;
 
+import com.example.weatherlib.project.WeatherModel.Forecast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +40,11 @@ public class ListenersManager {
 			listener.isLoading(isLoading);
 		}
 	}
+    
+    static void removedCityListener(Forecast forecast) {
+        for (ForecastsListener listener : listeners) {
+            listener.removedForecast(forecast);
+        }
+    }
 	
 }

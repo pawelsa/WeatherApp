@@ -10,4 +10,5 @@ public interface ForecastListener {
     
     void isLoading(boolean loading);
     
+    void removedForecast(Forecast forecast);
 }

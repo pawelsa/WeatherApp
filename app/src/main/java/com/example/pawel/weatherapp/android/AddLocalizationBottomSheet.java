@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.project.AddLocalizationPresenter;
+import com.example.weatherlibwithcityphotos.MainLib;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import androidx.annotation.NonNull;
@@ -28,15 +29,17 @@ public class AddLocalizationBottomSheet extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.bs_add_localization, container, false);
         
         presenter = new AddLocalizationPresenter(inflater.getContext());
-	    return v;
+        return v;
     }
-	
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		
-		view.findViewById(R.id.cl_newLocalization_createByName)
-				.setOnClickListener(v -> presenter.showAddNewCityAlertDialog());
-		
-	}
+    
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        view.findViewById(R.id.cl_newLocalization_createByName)
+                .setOnClickListener(v -> presenter.showAddNewCityAlertDialog());
+        view.findViewById(R.id.cl_newLocalization_createByGPS)
+                .setOnClickListener(v -> MainLib.downloadNewForecastFromLocalization());
+        
+    }
 }

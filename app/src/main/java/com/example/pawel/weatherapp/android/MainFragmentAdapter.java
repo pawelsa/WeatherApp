@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.databinding.CardLayoutBinding;
 import com.example.pawel.weatherapp.databinding.CardLayoutNoBinding;
+import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.MainLib;
 
@@ -18,9 +19,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainFragmentAdapter
 		extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -85,6 +83,12 @@ public class MainFragmentAdapter
 			notifyItemInserted(placeWeatherDataList.size() - 1);
 		}
 	}
+    
+    void removeCity(Forecast forecast) {
+        if (placeWeatherDataList.remove(forecast)) {
+            notifyDataSetChanged();
+        }
+    }
 	
 	class CardViewHolderNoCity
 			extends RecyclerView.ViewHolder {
@@ -107,7 +111,7 @@ public class MainFragmentAdapter
 			this.position = position;
 			EForecast item = placeWeatherDataList.get(position);
 			View.OnLongClickListener removeListener = v -> {
-				displayDialog(item.ID, item.city.name);
+                displayDialog(item);
 				return false;
 			};
 			if ( noBinding != null ) {
@@ -118,28 +122,19 @@ public class MainFragmentAdapter
 				binding.cardForecastOnline.setOnLongClickListener(removeListener);
 			}
 		}
-		
-		private void displayDialog(int cityID, String cityName) {
+        
+        private void displayDialog(Forecast forecast) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setTitle(context.getText(R.string.dialog_remove_city_make_sure))
-					.setMessage(String.format(context.getString(R.string.dialog_remove_city_content), cityName))
-					.setPositiveButton(context.getString(android.R.string.ok),
-					                   (dialog, which) -> removeForecast(cityID, cityName))
+                    .setMessage(String.format(context.getString(R.string.dialog_remove_city_content), forecast.city.name))
+					.setPositiveButton(context.getString(android.R.string.ok), (dialog, which) -> removeForecast(forecast))
 					.setNegativeButton(context.getText(android.R.string.cancel), ((dialog, which) -> dialog.cancel()));
 			
 			builder.show();
 		}
-		
-		private void removeForecast(int cityID, String cityName) {
-			Observable.fromCallable(() -> MainLib.removeForecastFor(cityID, cityName))
-					.filter(result -> result).subscribeOn(Schedulers.io())
-					.observeOn(AndroidSchedulers.mainThread())
-					.flatMap(result -> {
-						placeWeatherDataList.remove(position);
-						notifyItemRemoved(position);
-						notifyDataSetChanged();
-						return Observable.empty();
-					}).subscribe();
+        
+        private void removeForecast(Forecast forecast) {
+            MainLib.removeForecastFor(forecast);
 		}
 	}
 	
