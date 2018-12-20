@@ -15,6 +15,7 @@ public class TestLocation extends BaseModel {
     public int IDs;
     public double latitude;
     public double longitude;
+	public double timestamp;
     
     public TestLocation() {
     }
@@ -22,6 +23,7 @@ public class TestLocation extends BaseModel {
     public TestLocation(Location location) {
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
+	    this.timestamp = System.currentTimeMillis();
     }
     
 }

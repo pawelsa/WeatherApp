@@ -89,11 +89,11 @@
 
                 <ImageView
                     android:id="@+id/iv_card_weatherIcon"
+                    imageUrl="@{forecast.dispWeatherIcon}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:src="@drawable/weather_clouds_night"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/fl_card_cityBackground" />
 

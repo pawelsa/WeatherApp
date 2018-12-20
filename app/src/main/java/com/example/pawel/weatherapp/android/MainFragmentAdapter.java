@@ -83,12 +83,12 @@ public class MainFragmentAdapter
 			notifyItemInserted(placeWeatherDataList.size() - 1);
 		}
 	}
-    
-    void removeCity(Forecast forecast) {
-        if (placeWeatherDataList.remove(forecast)) {
-            notifyDataSetChanged();
-        }
-    }
+	
+	void removeCity(Forecast forecast) {
+		if ( placeWeatherDataList.remove(forecast) ) {
+			notifyDataSetChanged();
+		}
+	}
 	
 	class CardViewHolderNoCity
 			extends RecyclerView.ViewHolder {
@@ -111,7 +111,7 @@ public class MainFragmentAdapter
 			this.position = position;
 			EForecast item = placeWeatherDataList.get(position);
 			View.OnLongClickListener removeListener = v -> {
-                displayDialog(item);
+				displayDialog(item);
 				return false;
 			};
 			if ( noBinding != null ) {
@@ -120,21 +120,25 @@ public class MainFragmentAdapter
 			} else {
 				binding.setForecast(item);
 				binding.cardForecastOnline.setOnLongClickListener(removeListener);
+				binding.sbCardTime.setProgress(0);
+				binding.invalidateAll();
 			}
 		}
-        
-        private void displayDialog(Forecast forecast) {
+		
+		private void displayDialog(Forecast forecast) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setTitle(context.getText(R.string.dialog_remove_city_make_sure))
-                    .setMessage(String.format(context.getString(R.string.dialog_remove_city_content), forecast.city.name))
-					.setPositiveButton(context.getString(android.R.string.ok), (dialog, which) -> removeForecast(forecast))
+					.setMessage(String.format(context.getString(R.string.dialog_remove_city_content),
+					                          forecast.city.name))
+					.setPositiveButton(context.getString(android.R.string.ok),
+					                   (dialog, which) -> removeForecast(forecast))
 					.setNegativeButton(context.getText(android.R.string.cancel), ((dialog, which) -> dialog.cancel()));
 			
 			builder.show();
 		}
-        
-        private void removeForecast(Forecast forecast) {
-            MainLib.removeForecastFor(forecast);
+		
+		private void removeForecast(Forecast forecast) {
+			MainLib.removeForecastFor(forecast);
 		}
 	}
 	

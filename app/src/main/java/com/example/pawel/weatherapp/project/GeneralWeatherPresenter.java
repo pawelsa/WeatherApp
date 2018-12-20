@@ -3,6 +3,9 @@ package com.example.pawel.weatherapp.project;
 import android.util.Log;
 
 import com.example.pawel.weatherapp.android.AddLocalizationBottomSheet;
+import com.example.weatherlib.project.Tools.ExceptionTester;
+import com.example.weatherlib.project.Tools.NoInternetConnection;
+import com.example.weatherlib.project.Tools.NotExists;
 import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
@@ -14,14 +17,14 @@ public class GeneralWeatherPresenter {
 	
 	private ForecastsListener listener;
 	private GeneralWeatherInterface view;
-    private AddLocalizationBottomSheet bottomSheet;
+	private AddLocalizationBottomSheet bottomSheet;
 	
 	public GeneralWeatherPresenter(GeneralWeatherInterface view) {
 		this.view = view;
 	}
 	
 	public void showAddLocalizationSheet(FragmentActivity activity) {
-        bottomSheet = new AddLocalizationBottomSheet();
+		bottomSheet = new AddLocalizationBottomSheet();
 		bottomSheet.show(activity.getSupportFragmentManager(), bottomSheet.getTag());
 	}
 	
@@ -37,9 +40,11 @@ public class GeneralWeatherPresenter {
 			@Override
 			public void onError(Throwable t) {
 				Log.d("Presenter", "Error : " + t.getMessage());
-                view.showSnackbar(t.getMessage());
-                view.isRefreshing(false);
-                t.printStackTrace();
+				if ( ExceptionTester.matchesException(t, NotExists.class) ||
+				     ExceptionTester.matchesException(t, NoInternetConnection.class) ) {
+					view.showSnackbar(t.getMessage());
+					view.isRefreshing(false);
+				}
 			}
 			
 			@Override
@@ -47,13 +52,13 @@ public class GeneralWeatherPresenter {
 				Log.d("Presenter", "Loading : " + String.valueOf(loading));
 				view.isRefreshing(loading);
 			}
-            
-            @Override
-            public void removedForecast(Forecast forecast) {
-                Log.d("Presenter", "Remove : " + forecast.city.name);
-                view.removeForecastFromAdapter(forecast);
-            }
-        };
+			
+			@Override
+			public void removedForecast(Forecast forecast) {
+				Log.d("Presenter", "Remove : " + forecast.city.name);
+				view.removeForecastFromAdapter(forecast);
+			}
+		};
 		MainLib.addListener(listener);
 		MainLib.streamForecastsWithRefresh();
 	}

@@ -84,15 +84,19 @@ public class Forecast
 		super.equals(obj);
 		
 		boolean result = false;
-		
+		Collator instance = Collator.getInstance();
+		instance.setStrength(Collator.NO_DECOMPOSITION);
 		if ( obj instanceof Forecast ) {
 			Forecast other = ( Forecast ) obj;
-			
-			Collator instance = Collator.getInstance();
-			instance.setStrength(Collator.NO_DECOMPOSITION);
 			int equalName = instance.compare(this.city.name, other.city.name);
 			result = this.ID == other.ID || equalName == 0;
+		} else if ( obj instanceof String ) {
+			String otherName = ( String ) obj;
+			int equalName = instance.compare(this.city.name, otherName);
+			result = equalName == 0;
 		}
 		return result;
 	}
+	
+	
 }

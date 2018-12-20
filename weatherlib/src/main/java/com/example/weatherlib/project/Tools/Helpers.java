@@ -12,7 +12,7 @@ public class Helpers {
 		Log.d("Thread", msg + " on : " + getThreadName());
 	}
 	
-	public static String getThreadName() {
+	private static String getThreadName() {
 		return Thread.currentThread()
 				.getName();
 	}
@@ -23,7 +23,7 @@ public class Helpers {
 	}
 	
 	public static void logURL(String url) {
-		Log.i("URL", url);
+		Log.i("URL", url + " on thread : " + Thread.currentThread().getName());
 	}
 	
 	public static String getURL(Response response) {
