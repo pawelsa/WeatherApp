@@ -22,13 +22,17 @@ public class CurrentWeather {
 	public CurrentWeather(com.example.weatherlib.project.WeatherModel.CurrentWeather currentWeather) {
 		this.id = currentWeather.id;
 		this.dt = currentWeather.dt;
-		this.weather = new Weather(currentWeather.weather.get(0));
-		this.main = new Main(currentWeather.main);
-		this.snow = currentWeather.snow._3h;
-		this.rain = currentWeather.rain._3h;
-		this.clouds = currentWeather.clouds.all;
-		this.windDegree = currentWeather.wind.deg;
-		this.windSpeed = currentWeather.wind.speed;
+		if ( currentWeather.weather != null && currentWeather.weather.get(0) != null ) {
+			this.weather = new Weather(currentWeather.weather.get(0));
+		}
+		if ( currentWeather.main != null ) {
+			this.main = new Main(currentWeather.main);
+		}
+		this.snow = currentWeather.snow != null ? currentWeather.snow._3h : 0;
+		this.rain = currentWeather.rain != null ? currentWeather.rain._3h : 0;
+		this.clouds = currentWeather.clouds != null ? currentWeather.clouds.all : 0;
+		this.windDegree = currentWeather.wind != null ? currentWeather.wind.deg : 0;
+		this.windSpeed = currentWeather.wind != null ? currentWeather.wind.speed : 0;
 	}
 	
 	public int getId() {

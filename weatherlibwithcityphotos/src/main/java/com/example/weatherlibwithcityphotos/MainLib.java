@@ -44,25 +44,24 @@ public class MainLib {
 	
 	public static Maybe<EForecast> readForecastFor(int cityID) {
 		return WeatherLib.readForecastFor(cityID)
-				.flatMap(forecast ->
-						         PhotoDownload.getPhoto(forecast.city.name)
-								         .map(photo -> {
-									         EForecast eForecast = new EForecast(forecast);
-									         eForecast.photoReference = photo;
-									         return eForecast;
-								         })
-								         .onErrorResumeNext(Single.just(new EForecast(forecast)))
-								         .toMaybe()
+				.flatMap(forecast -> getPhotoFor(forecast)
+						.toMaybe()
 				);
 	}
+	
 	
 	public static int getForecastCount() {
 		return WeatherLib.getForecastCount();
 	}
 	
-	public static void removeForecastFor(EForecast forecast) {
-		PhotoDownload.removePhotoFor(forecast.city.name);
-		WeatherLib.removeForecastFor(forecast.city.ID, forecast.city.name);
+	private static Single<EForecast> getPhotoFor(Forecast forecast) {
+		return PhotoDownload.getPhoto(forecast.city.name)
+				.map(photo -> {
+					EForecast eForecast = new EForecast(forecast);
+					eForecast.city.setPhotoReference(photo);
+					return eForecast;
+				})
+				.onErrorResumeNext(Single.just(new EForecast(forecast)));
 	}
 	
 	public static void refreshForecast() {
@@ -84,17 +83,16 @@ public class MainLib {
 		ListenersManager.removeListener(listener);
 	}
 	
+	public static void removeForecastFor(EForecast forecast) {
+		PhotoDownload.removePhotoFor(forecast.city.getName());
+		WeatherLib.removeForecastFor(forecast.city.getID(), forecast.city.getName());
+	}
+	
 	private static ForecastListener getForecastListener() {
 		return new ForecastListener() {
 			@Override
 			public void onSuccess(Forecast forecast) {
-				disposable = PhotoDownload.getPhoto(forecast.city.name)
-						.map(photo -> {
-							EForecast eForecast = new EForecast(forecast);
-							eForecast.photoReference = photo;
-							return eForecast;
-						})
-						.onErrorResumeNext(Single.just(new EForecast(forecast)))
+				disposable = getPhotoFor(forecast)
 						.observeOn(AndroidSchedulers.mainThread())
 						.subscribe(ListenersManager::onSuccessListener, Throwable::printStackTrace);
 			}
@@ -111,7 +109,7 @@ public class MainLib {
 			
 			@Override
 			public void removedForecast(Forecast forecast) {
-				ListenersManager.removedCityListener(forecast);
+				ListenersManager.removedCityListener(new EForecast(forecast));
 			}
 		};
 	}

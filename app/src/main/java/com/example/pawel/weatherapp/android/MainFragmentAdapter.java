@@ -14,6 +14,8 @@ import com.example.weatherlibwithcityphotos.MainLib;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -78,6 +80,7 @@ public class MainFragmentAdapter
 		return placeWeatherDataList != null ? placeWeatherDataList.size() : 0;
 	}
 	
+	/*
 	public void add(EForecast placeWeatherData) {
 		if ( placeWeatherDataList != null && placeWeatherDataList.contains(placeWeatherData) ) {
 			Log.d("Contains", "YES");
@@ -93,24 +96,29 @@ public class MainFragmentAdapter
 			notifyItemInserted(placeWeatherDataList.size() - 1);
 		}
 	}
-	
-	public void add(List<EForecast> eForecastList) {
+	*/
+	void add(List<EForecast> eForecastList) {
+		AtomicReference<DiffUtil.DiffResult> diffs = new AtomicReference<>();
 		Single.create(emitter -> {
-			DiffUtil.DiffResult diffs =
-					DiffUtil.calculateDiff(new EForecastDiffList(this.placeWeatherDataList, eForecastList));
-			this.placeWeatherDataList = eForecastList;
-			diffs.dispatchUpdatesTo(this);
-			Log.i("Adapter", "add , ");
+			diffs.set(DiffUtil.calculateDiff(new EForecastDiffList(this.placeWeatherDataList, eForecastList)));
 			if ( eForecastList != null ) {
 				emitter.onSuccess(eForecastList);
+			} else {
+				emitter.onError(new Throwable("Null weatherList"));
 			}
-			emitter.onError(new Throwable("Null weatherList"));
 		})
-				.filter(o -> o != null)
+				.filter(Objects::nonNull)
 				.map(o -> ( List<EForecast> ) o)
 				.subscribeOn(Schedulers.computation())
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(forecast -> placeWeatherDataList = forecast, Throwable::printStackTrace);
+				.subscribe(forecast -> {
+					Log.i("Adapter", "Entry size " + eForecastList.size());
+					diffs.get().dispatchUpdatesTo(this);
+					placeWeatherDataList.clear();
+					placeWeatherDataList.addAll(forecast);
+					notifyDataSetChanged();
+					Log.i("Adapter", "add , " + placeWeatherDataList.size());
+				}, Throwable::printStackTrace);
 	}
 	
 	void removeCity(EForecast forecast) {
@@ -150,8 +158,9 @@ public class MainFragmentAdapter
 				binding.cardForecastOnline.setOnLongClickListener(removeListener);
 				binding.cardForecastOnline.setOnClickListener(v -> {
 					if ( listener != null ) {
-						ViewCompat.setTransitionName(binding.clCardMain, String.valueOf(item.city.ID));
-						listener.onForecastClicked(item.city.ID, binding.clCardMain);
+						ViewCompat.setTransitionName(binding.clCardMain, String.valueOf(item.city.getID()));
+						Log.i("ForecastID", "Adapter : " + item.city.getID());
+						listener.onForecastClicked(item.city.getID(), binding.clCardMain);
 					}
 				});
 			}
@@ -161,7 +170,7 @@ public class MainFragmentAdapter
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setTitle(context.getText(R.string.dialog_remove_city_make_sure))
 					.setMessage(String.format(context.getString(R.string.dialog_remove_city_content),
-					                          forecast.city.name))
+					                          forecast.city.getName()))
 					.setPositiveButton(context.getString(android.R.string.ok),
 					                   (dialog, which) -> removeForecast(forecast))
 					.setNegativeButton(context.getText(android.R.string.cancel), ((dialog, which) -> dialog.cancel()));

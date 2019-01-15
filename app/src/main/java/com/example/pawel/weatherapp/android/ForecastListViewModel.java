@@ -11,27 +11,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ForecastListViewModel
+class ForecastListViewModel
 		extends ViewModel {
 	
 	private MutableLiveData<List<EForecast>> list;
-	private MutableLiveData<EForecast> lastItemAdded;
 	private MutableLiveData<Boolean> wasDownloaded;
 	
 	LiveData<List<EForecast>> getObservableList() {
-		if ( list == null ) {
+		if ( list == null || list.getValue() == null ) {
 			list = new MutableLiveData<>();
+			list.setValue(new ArrayList<>());
 		}
-		Log.i("getObservableList",
-		      "Size : " + (list.getValue() == null ? "null" : String.valueOf(list.getValue().size())));
 		return list;
-	}
-	
-	LiveData<EForecast> getLastItem() {
-		if ( lastItemAdded == null ) {
-			lastItemAdded = new MutableLiveData<>();
-		}
-		return lastItemAdded;
 	}
 	
 	LiveData<Boolean> observeWasDownloaded() {
@@ -56,13 +47,9 @@ public class ForecastListViewModel
 			value.add(forecast);
 		}
 		list.setValue(value);
-		if ( lastItemAdded == null ) {
-			lastItemAdded = new MutableLiveData<>();
-		}
-		lastItemAdded.setValue(forecast);
 	}
 	
-	public void setDownloaded(boolean isDownloaded) {
+	void setDownloaded(boolean isDownloaded) {
 		wasDownloaded.setValue(isDownloaded);
 	}
 }

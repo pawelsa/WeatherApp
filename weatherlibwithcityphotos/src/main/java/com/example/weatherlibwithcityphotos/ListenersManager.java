@@ -2,12 +2,10 @@ package com.example.weatherlibwithcityphotos;
 
 import android.util.Log;
 
-import com.example.weatherlib.project.WeatherModel.Forecast;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListenersManager {
+class ListenersManager {
 	
 	private static List<ForecastsListener> listeners = new ArrayList<>();
 	
@@ -40,8 +38,8 @@ public class ListenersManager {
 			listener.isLoading(isLoading);
 		}
 	}
-    
-    static void removedCityListener(Forecast forecast) {
+	
+	static void removedCityListener(EForecast forecast) {
         for (ForecastsListener listener : listeners) {
             listener.removedForecast(forecast);
         }

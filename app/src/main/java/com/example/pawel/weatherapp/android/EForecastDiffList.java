@@ -35,8 +35,9 @@ public class EForecastDiffList
 	@Override
 	public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
 		boolean result = false;
-		if ( mOld.get(oldItemPosition).weatherList != null && mOld.get(oldItemPosition).weatherList.isEmpty() && mNew.get(
-				newItemPosition).weatherList != null && mNew.get(newItemPosition).weatherList.isEmpty() ) {
+		if ( mOld.get(oldItemPosition).weatherList != null && ! mOld.get(oldItemPosition).weatherList.isEmpty()
+		     && mNew.get(newItemPosition).weatherList != null
+		     && ! mNew.get(newItemPosition).weatherList.isEmpty() ) {
 			result =
 					mOld.get(oldItemPosition).weatherList.get(0).getDt() == mNew.get(newItemPosition).weatherList.get(0)
 							.getDt();

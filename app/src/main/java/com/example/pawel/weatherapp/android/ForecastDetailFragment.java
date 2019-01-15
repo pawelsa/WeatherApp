@@ -3,6 +3,7 @@ package com.example.pawel.weatherapp.android;
 
 import android.os.Bundle;
 import android.transition.ChangeBounds;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class ForecastDetailFragment
 	
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_forecast_detail, container, false);
@@ -47,6 +48,7 @@ public class ForecastDetailFragment
 		
 		
 		int itemId = ForecastDetailFragmentArgs.fromBundle(getArguments()).getCityId();
+		Log.i("ForecastID", "DetailFragment : " + itemId);
 		MainLib.readForecastFor(itemId)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
@@ -64,10 +66,10 @@ public class ForecastDetailFragment
 					                                                                  false));
 					binding.rvDetailWeathers.setHasFixedSize(true);
 					
-					RecyclerView.Adapter adapter =
-							new WeatherItemAdapter(forecast.weatherList,
-							                       id -> binding.getForecast().setDisplayValue(forecast.weatherList
-									                                                                   .get(id)));
+					RecyclerView.Adapter adapter = new WeatherItemAdapter(forecast.weatherList,
+					                                                      id -> binding.getForecast()
+							                                                      .setDisplayValue(forecast.weatherList
+									                                                                       .get(id)));
 					binding.rvDetailWeathers.setAdapter(adapter);
 					startPostponedEnterTransition();
 				});

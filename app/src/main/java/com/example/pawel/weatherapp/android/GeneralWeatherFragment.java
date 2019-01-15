@@ -70,13 +70,12 @@ public class GeneralWeatherFragment
 		
 		viewModel.observeWasDownloaded().observe(this, isDownloaded -> {
 			if ( ! isDownloaded ) {
-				Log.i("Downaloaded", "Downloading");
 				presenter.addItemsToAdapter();
 			}
 		});
-		EForecast eForecast = new EForecast();
-		adapter.add(viewModel.getObservableList().getValue());
-		viewModel.getLastItem().observe(this, forecast -> adapter.add(forecast));
+		
+		viewModel.getObservableList()
+				.observe(this, eForecasts -> adapter.add(eForecasts));
 		
 		forecastRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		forecastRecyclerView.setAdapter(adapter);
@@ -87,7 +86,9 @@ public class GeneralWeatherFragment
 					public void onGlobalLayout() {
 						if ( forecastRecyclerView.getMeasuredHeight() > 0 && forecastRecyclerView.getMeasuredWidth() > 0 ) {
 							forecastRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-							Log.i("PostponedTransition", "globalLayoutListener");
+							Log.i("PostponedTransition",
+							      "globalLayoutListener w: " + forecastRecyclerView.getMeasuredWidth() + " h: " + forecastRecyclerView
+									      .getMeasuredHeight());
 							startPostponedEnterTransition();
 						}
 					}
@@ -110,8 +111,8 @@ public class GeneralWeatherFragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		presenter.onResume();
 		Log.i("Fragment", "Resume");
+		presenter.onResume();
 	}
 	
 	@Override
@@ -123,8 +124,8 @@ public class GeneralWeatherFragment
 	@Override
 	public void onStop() {
 		super.onStop();
-		presenter.onStop();
 		Log.i("Fragment", "Stop");
+		presenter.onStop();
 	}
 	
 	@Override

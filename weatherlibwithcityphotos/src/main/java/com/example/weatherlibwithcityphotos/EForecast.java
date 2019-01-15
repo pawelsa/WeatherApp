@@ -11,6 +11,7 @@ import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.example.weatherlibwithcityphotos.WeatherModels.City;
 import com.example.weatherlibwithcityphotos.WeatherModels.CurrentWeather;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,6 @@ public class EForecast {
 	public City city;
 	
 	public ObservableInt dispWeatherIcon = new ObservableInt(0);
-	public String photoReference;
 	public ObservableField<String> dispTemp = new ObservableField<>("");
 	public ObservableField<String> dispHumidity = new ObservableField<>("");
 	public ObservableField<String> dispWind = new ObservableField<>("");
@@ -57,11 +57,17 @@ public class EForecast {
 		}
 	}
 	
+	public String getPhotoReference() {
+		return city.getPhotoReference();
+	}
+	
 	private List<CurrentWeather> convertWeatherList(
 			List<com.example.weatherlib.project.WeatherModel.CurrentWeather> list) {
 		List<CurrentWeather> newList = new ArrayList<>();
-		for ( com.example.weatherlib.project.WeatherModel.CurrentWeather item : list ) {
-			newList.add(new CurrentWeather(item));
+		if ( list != null ) {
+			for ( com.example.weatherlib.project.WeatherModel.CurrentWeather item : list ) {
+				newList.add(new CurrentWeather(item));
+			}
 		}
 		return newList;
 	}
@@ -110,11 +116,35 @@ public class EForecast {
 	}
 	
 	public String getCityName() {
-		return this.city.name;
+		return this.city.getName();
+	}
+	
+	@Override
+	public int hashCode() {
+		super.hashCode();
+		return city.getID();
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return super.equals(obj);
+		super.equals(obj);
+		
+		boolean result = false;
+		Collator instance = Collator.getInstance();
+		instance.setStrength(Collator.NO_DECOMPOSITION);
+		if ( obj instanceof EForecast ) {
+			EForecast other = ( EForecast ) obj;
+			int equalName = instance.compare(this.city.getName(), other.city.getName());
+			result = this.city.getID() == other.city.getID() || equalName == 0;
+		} else if ( obj instanceof Forecast ) {
+			Forecast other = ( Forecast ) obj;
+			int equalName = instance.compare(this.city.getName(), other.city.name);
+			result = this.city.getID() == other.city.id || equalName == 0;
+		} else if ( obj instanceof String ) {
+			String otherName = ( String ) obj;
+			int equalName = instance.compare(this.city.getName(), otherName);
+			result = equalName == 0;
+		}
+		return result;
 	}
 }
