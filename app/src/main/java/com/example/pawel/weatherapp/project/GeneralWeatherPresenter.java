@@ -30,7 +30,13 @@ public class GeneralWeatherPresenter {
 	
 	public void addItemsToAdapter() {
 		
-		listener = new ForecastsListener() {
+		listener = getForecastListener();
+		MainLib.addListener(listener);
+		MainLib.streamForecastsWithRefresh();
+	}
+	
+	private ForecastsListener getForecastListener() {
+		return new ForecastsListener() {
 			@Override
 			public void onSuccess(EForecast forecast) {
 				Log.d("Presenter", "Forecast for : " + forecast.city.name);
@@ -43,8 +49,9 @@ public class GeneralWeatherPresenter {
 				if ( ExceptionTester.matchesException(t, NotExists.class) ||
 				     ExceptionTester.matchesException(t, NoInternetConnection.class) ) {
 					view.showSnackbar(t.getMessage());
-					view.isRefreshing(false);
 				}
+				view.isRefreshing(false);
+				t.printStackTrace();
 			}
 			
 			@Override
@@ -56,11 +63,9 @@ public class GeneralWeatherPresenter {
 			@Override
 			public void removedForecast(Forecast forecast) {
 				Log.d("Presenter", "Remove : " + forecast.city.name);
-				view.removeForecastFromAdapter(forecast);
+				view.removeForecastFromAdapter(new EForecast(forecast));
 			}
 		};
-		MainLib.addListener(listener);
-		MainLib.streamForecastsWithRefresh();
 	}
 	
 	public void refreshForecast() {
@@ -68,9 +73,10 @@ public class GeneralWeatherPresenter {
 	}
 	
 	public void onResume() {
-		if ( listener != null ) {
-			MainLib.addListener(listener);
+		if ( listener == null ) {
+			listener = getForecastListener();
 		}
+		MainLib.addListener(listener);
 	}
 	
 	public void onStop() {

@@ -1,7 +1,6 @@
 package com.example.weatherlibwithcityphotos
 
 import android.graphics.Color
-import android.util.Log
 
 class ColorHelper {
 
@@ -31,7 +30,7 @@ class ColorHelper {
         }
 
         fun pickHex(color1: IntArray, color2: IntArray, weight: Float, restWeight: Float = 1 - weight): Int {
-            Log.i("Color", "Progress : $weight rest : $restWeight")
+            //Log.i("Color", "Progress : $weight rest : $restWeight")
             return Color.argb(Math.round(color2[0] * weight + color1[0] * restWeight),
                     Math.round(color2[1] * weight + color1[1] * restWeight),
                     Math.round(color2[2] * weight + color1[2] * restWeight),

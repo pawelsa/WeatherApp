@@ -5,7 +5,14 @@ import com.example.weatherlib.project.Database.DatabaseManager;
 import com.example.weatherlib.project.GPSLocation;
 import com.example.weatherlib.project.Tools.NetworkCheck;
 import com.example.weatherlib.project.Tools.NoInternetConnection;
+import com.example.weatherlib.project.WeatherModel.CurrentWeather;
+import com.example.weatherlib.project.WeatherModel.CurrentWeather_Table;
 import com.example.weatherlib.project.WeatherModel.Forecast;
+import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
@@ -36,10 +43,38 @@ public class ForecastStreams {
 		Flowable<Forecast> startLoadingForecasts = getStartLoadingForecastStream();
 		
 		Flowable<Forecast> refreshForecast =
-				getRefreshingForecastStream(getStartLoadingForecastStream());
+				ifOldDataThenUpdate(getStartLoadingForecastStream());
 		
 		Flowable<Forecast> connectable = startLoadingForecasts.mergeWith(refreshForecast);
 		disposables.add(getLoadingDisposable(connectable));
+	}
+	
+	private static Flowable<Forecast> ifOldDataThenUpdate(Flowable<Forecast> stream) {
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		
+		Calendar cTs = Calendar.getInstance();
+		cTs.setTimeInMillis(ts.getTime());
+		
+		cTs.set(Calendar.HOUR_OF_DAY, cTs.get(Calendar.HOUR_OF_DAY) - 2);
+		ts.setTime(cTs.getTimeInMillis());
+		
+		return RXSQLite.rx(SQLite.select()
+				                   .from(CurrentWeather.class)
+				                   .where(CurrentWeather_Table.dt.greaterThan(Double.valueOf(
+						                   ts.getTime()))))
+				.queryList()
+				.toFlowable()
+				.filter(currentWeathers -> currentWeathers.size() > 0)
+				.flatMap(currentWeathers -> getRefreshingForecastStream(stream))
+				/*.flatMap(currentWeathers -> {
+					if ( currentWeathers.size() > 0 ) {
+						Log.i("Elements", "more");
+						return getRefreshingForecastStream(stream);
+					} else {
+						Log.i("Elements", "0");
+						return Flowable.empty();
+					}
+				})*/;
 	}
 	
 	private static Flowable<Forecast> getStartLoadingForecastStream() {

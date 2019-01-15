@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_nav"
+    app:startDestination="@id/generalWeatherFragment">
+
+    <fragment
+        android:id="@+id/generalWeatherFragment"
+        android:name="com.example.pawel.weatherapp.android.GeneralWeatherFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_generalWeatherFragment_to_forecastDetailFragment"
+            app:destination="@id/forecastDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forecastDetailFragment"
+        android:name="com.example.pawel.weatherapp.android.ForecastDetailFragment"
+        android:label="fragment_forecast_detail"
+        tools:layout="@layout/fragment_forecast_detail">
+        <argument
+            android:name="cityId"
+            app:argType="integer" />
+    </fragment>
+</navigation>

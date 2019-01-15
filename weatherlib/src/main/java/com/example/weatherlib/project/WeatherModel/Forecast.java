@@ -64,10 +64,6 @@ public class Forecast
 		return delete;
 	}
 	
-	public void setCityImageUrl(String url) {
-		this.city.setCityImageUrl(url);
-	}
-	
 	@Override
 	public boolean isDownloaded() {
 		return ID >= 0;

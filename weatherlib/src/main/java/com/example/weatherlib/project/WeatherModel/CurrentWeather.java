@@ -33,6 +33,14 @@ public class CurrentWeather
 	@Column
 	public Clouds clouds;
 	
+	@ForeignKey( saveForeignKeyModel = true )
+	@Column
+	public Rain rain;
+	
+	@ForeignKey( saveForeignKeyModel = true )
+	@Column
+	public Snow snow;
+	
 	@Column
 	public double dt;
 	

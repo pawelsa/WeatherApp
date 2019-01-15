@@ -12,4 +12,13 @@
     <string name="dialog_remove_city_make_sure">Jesteś pewien/na ?</string>
     <string name="dialog_remove_city_content">Czy na pewno chcesz usunąć %1$s z twojej listy ?</string>
     <string name="dialog_new_city_headline">Wprowadź nazwę miasta</string>
+    <string name="detail_temp">Temperatura %s</string>
+    <string name="detail_temp_min">Minimalna temperatura %s</string>
+    <string name="detail_temp_max">Maksymalna temperatura %s</string>
+    <string name="detail_wind">Prędkość wiatru %s</string>
+    <string name="detail_pressure">Ciśnienie %s</string>
+    <string name="detail_humidity">Wilgotność %s%%</string>
+    <string name="detail_clouds">Zachmurzenie %s%%</string>
+    <string name="detail_rain">Ilość deszczu w 3h %s</string>
+    <string name="detail_snow">Ilość śniegu w 3h %s</string>
 </resources>

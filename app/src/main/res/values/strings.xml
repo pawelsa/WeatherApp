@@ -14,4 +14,15 @@
     <string name="dialog_remove_city_confirm">CONFIRM</string>
     <string name="dialog_remove_city_make_sure">Are you sure ? </string>
     <string name="dialog_remove_city_content">Do your really want to remove %1$s from your list ?</string>
+
+    <string name="detail_temp">Temp %s</string>
+    <string name="detail_temp_min">Temp min %s</string>
+    <string name="detail_temp_max">Temp max %s</string>
+    <string name="detail_wind">Wind speed %s m/s</string>
+    <string name="detail_pressure">Pressure %s</string>
+    <string name="detail_humidity">Humidity %s%%</string>
+    <string name="detail_clouds">Clouds %s%%</string>
+    <string name="detail_rain">Rain in 3h %s</string>
+    <string name="detail_snow">Snow in 3h %s</string>
+
 </resources>

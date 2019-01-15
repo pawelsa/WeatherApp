@@ -20,12 +20,6 @@ public class City
 	@PrimaryKey
 	public String name;
 	
-	public String cityImageUrl;
-	
-	public void setCityImageUrl(String cityImageUrl) {
-		this.cityImageUrl = cityImageUrl;
-	}
-	
 	public City() {
 	}
 	

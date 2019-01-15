@@ -33,6 +33,14 @@ public class DatabaseManager {
 				.subscribeOn(Schedulers.io());
 	}
 	
+	public static Maybe<Forecast> readForecastFor(int cityID) {
+		return RXSQLite.rx(SQLite.select().from(Forecast.class).where(Forecast_Table.city_id.eq(cityID))).querySingle();
+	}
+	
+	public static int getForecastCount() {
+		return SQLite.select().from(Forecast.class).where(Forecast_Table.city_id.greaterThan(0)).queryList().size();
+	}
+	
 	public static Maybe<Forecast> removeOldForecastData(final Forecast forecast) {
 		return removeOldWeatherData(forecast).flatMap(DatabaseManager::removeFreshlyDownloadedForecast);
 	}
@@ -105,10 +113,13 @@ public class DatabaseManager {
 	}
 	
 	public static Flowable<Forecast> removeForecast(Forecast forecast) {
-		
+		return removeForecast(forecast.ID, forecast.city.name);
+	}
+	
+	public static Flowable<Forecast> removeForecast(int cityID, String cityName) {
 		OperatorGroup conditions = OperatorGroup.clause();
-		conditions.or(Forecast_Table.city_name.eq(forecast.city.name));
-		conditions.or(Forecast_Table.city_id.eq(forecast.city.id));
+		conditions.or(Forecast_Table.city_name.eq(cityName));
+		conditions.or(Forecast_Table.city_id.eq(cityID));
 		return queryForecastStreamWhere(conditions).filter(Forecast::delete);
 	}
 	

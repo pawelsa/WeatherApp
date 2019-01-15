@@ -9,6 +9,7 @@ import com.example.weatherlib.project.Main.WeatherLib;
 import com.example.weatherlib.project.Tools.Units;
 import com.example.weatherlib.project.WeatherModel.Forecast;
 
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -18,11 +19,11 @@ public class MainLib {
 	private static Disposable disposable;
 	
 	private static final ForecastListener forecastListener = getForecastListener();
-    
-    public static void setup(Activity activity, String weatherApiKey, String googleApiKey) {
-        WeatherLib.setupWeatherLib(activity, weatherApiKey);
+	
+	public static void setup(Activity activity, String weatherApiKey, String googleApiKey) {
+		WeatherLib.setupWeatherLib(activity, weatherApiKey);
 		WeatherLib.addListener(forecastListener);
-        PhotoDownload.setup(activity, googleApiKey);
+		PhotoDownload.setup(activity, googleApiKey);
 	}
 	
 	public static void useUnits(Units units) {
@@ -32,18 +33,36 @@ public class MainLib {
 	public static void streamForecastsWithRefresh() {
 		WeatherLib.streamForecastsWithRefresh();
 	}
-    
-    public static void downloadNewForecastFromLocalization() {
-        WeatherLib.downloadNewForecastFromLocalization();
-    }
+	
+	public static void downloadNewForecastFromLocalization() {
+		WeatherLib.downloadNewForecastFromLocalization();
+	}
 	
 	public static void downloadNewForecastFor(String cityName) {
 		WeatherLib.downloadNewForecastFor(cityName);
 	}
-    
-    public static void removeForecastFor(Forecast forecast) {
-        PhotoDownload.removePhotoFor(forecast.city.name);
-        WeatherLib.removeForecastFor(forecast);
+	
+	public static Maybe<EForecast> readForecastFor(int cityID) {
+		return WeatherLib.readForecastFor(cityID)
+				.flatMap(forecast ->
+						         PhotoDownload.getPhoto(forecast.city.name)
+								         .map(photo -> {
+									         EForecast eForecast = new EForecast(forecast);
+									         eForecast.photoReference = photo;
+									         return eForecast;
+								         })
+								         .onErrorResumeNext(Single.just(new EForecast(forecast)))
+								         .toMaybe()
+				);
+	}
+	
+	public static int getForecastCount() {
+		return WeatherLib.getForecastCount();
+	}
+	
+	public static void removeForecastFor(EForecast forecast) {
+		PhotoDownload.removePhotoFor(forecast.city.name);
+		WeatherLib.removeForecastFor(forecast.city.ID, forecast.city.name);
 	}
 	
 	public static void refreshForecast() {
@@ -89,11 +108,11 @@ public class MainLib {
 			public void isLoading(boolean loading) {
 				ListenersManager.isLoadingListener(loading);
 			}
-            
-            @Override
-            public void removedForecast(Forecast forecast) {
-                ListenersManager.removedCityListener(forecast);
-            }
+			
+			@Override
+			public void removedForecast(Forecast forecast) {
+				ListenersManager.removedCityListener(forecast);
+			}
 		};
 	}
 }

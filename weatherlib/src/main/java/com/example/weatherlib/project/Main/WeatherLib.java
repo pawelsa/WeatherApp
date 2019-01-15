@@ -12,6 +12,8 @@ import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import io.reactivex.Maybe;
+
 import static com.example.weatherlib.project.Main.ForecastStreams.downloadDataForNewUnits;
 
 public class WeatherLib {
@@ -54,6 +56,14 @@ public class WeatherLib {
 		ForecastStreams.streamForecastsWithRefresh();
 	}
 	
+	public static Maybe<Forecast> readForecastFor(int cityID) {
+		return DatabaseManager.readForecastFor(cityID);
+	}
+	
+	public static int getForecastCount() {
+		return DatabaseManager.getForecastCount();
+	}
+	
 	public static void downloadNewForecastFromLocalization() {
 		ForecastStreams.downloadForecastsForCoordinates();
 	}
@@ -62,8 +72,8 @@ public class WeatherLib {
 		ForecastStreams.downloadNewForecastFor(cityName);
 	}
 	
-	public static void removeForecastFor(Forecast forecast) {
-		ForecastStreams.streamRemovedIDs(DatabaseManager.removeForecast(forecast));
+	public static void removeForecastFor(int cityID, String cityName) {
+		ForecastStreams.streamRemovedIDs(DatabaseManager.removeForecast(cityID, cityName));
 	}
 	
 	public static void refreshForecast() {
