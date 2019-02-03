@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pawel.weatherapp.ForecastToView;
 import com.example.pawel.weatherapp.R;
+import com.example.pawel.weatherapp.WeatherModels.ForecastModel;
 import com.example.pawel.weatherapp.databinding.CardLayoutBinding;
 import com.example.pawel.weatherapp.databinding.CardLayoutNoBinding;
-import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.MainLib;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class MainFragmentAdapter
 	private final int ONLINE = 1;
 	private final int OFFLINE = 0;
 	
-	private List<EForecast> placeWeatherDataList;
+	private List<ForecastModel> placeWeatherDataList;
 	private Context context;
 	private OnForecastItemClickListener listener;
 	
@@ -72,7 +73,7 @@ public class MainFragmentAdapter
 	@Override
 	public int getItemViewType(int position) {
 		return placeWeatherDataList.get(position)
-				       .downloaded ? ONLINE : OFFLINE;
+				       .isDownloaded() ? ONLINE : OFFLINE;
 	}
 	
 	@Override
@@ -81,7 +82,7 @@ public class MainFragmentAdapter
 	}
 	
 	/*
-	public void add(EForecast placeWeatherData) {
+	public void add(ForecastWithPhoto placeWeatherData) {
 		if ( placeWeatherDataList != null && placeWeatherDataList.contains(placeWeatherData) ) {
 			Log.d("Contains", "YES");
 			int index = placeWeatherDataList.indexOf(placeWeatherData);
@@ -97,22 +98,22 @@ public class MainFragmentAdapter
 		}
 	}
 	*/
-	void add(List<EForecast> eForecastList) {
+	void add(List<ForecastModel> forecastWithPhotoList) {
 		AtomicReference<DiffUtil.DiffResult> diffs = new AtomicReference<>();
 		Single.create(emitter -> {
-			diffs.set(DiffUtil.calculateDiff(new EForecastDiffList(this.placeWeatherDataList, eForecastList)));
-			if ( eForecastList != null ) {
-				emitter.onSuccess(eForecastList);
+			diffs.set(DiffUtil.calculateDiff(new EForecastDiffList(this.placeWeatherDataList, forecastWithPhotoList)));
+			if ( forecastWithPhotoList != null ) {
+				emitter.onSuccess(forecastWithPhotoList);
 			} else {
 				emitter.onError(new Throwable("Null weatherList"));
 			}
 		})
 				.filter(Objects::nonNull)
-				.map(o -> ( List<EForecast> ) o)
+				.map(o -> ( List<ForecastModel> ) o)
 				.subscribeOn(Schedulers.computation())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(forecast -> {
-					Log.i("Adapter", "Entry size " + eForecastList.size());
+					Log.i("Adapter", "Entry size " + forecastWithPhotoList.size());
 					diffs.get().dispatchUpdatesTo(this);
 					placeWeatherDataList.clear();
 					placeWeatherDataList.addAll(forecast);
@@ -121,7 +122,7 @@ public class MainFragmentAdapter
 				}, Throwable::printStackTrace);
 	}
 	
-	void removeCity(EForecast forecast) {
+	void removeCity(ForecastModel forecast) {
 		if ( placeWeatherDataList.remove(forecast) ) {
 			notifyDataSetChanged();
 		}
@@ -144,33 +145,34 @@ public class MainFragmentAdapter
 		}
 		
 		void bind(int position) {
-			EForecast item = placeWeatherDataList.get(position);
+			ForecastModel item = placeWeatherDataList.get(position);
+			ForecastToView toBind = new ForecastToView(placeWeatherDataList.get(position));
 			View.OnLongClickListener removeListener = v -> {
 				displayDialog(item);
 				return false;
 			};
 			if ( noBinding != null ) {
-				noBinding.setForecast(item);
+				noBinding.setForecast(toBind);
 				noBinding.cardForecastOnline.setOnLongClickListener(removeListener);
 				
 			} else {
-				binding.setForecast(item);
+				binding.setForecast(toBind);
 				binding.cardForecastOnline.setOnLongClickListener(removeListener);
 				binding.cardForecastOnline.setOnClickListener(v -> {
 					if ( listener != null ) {
-						ViewCompat.setTransitionName(binding.clCardMain, String.valueOf(item.city.getID()));
-						Log.i("ForecastID", "Adapter : " + item.city.getID());
-						listener.onForecastClicked(item.city.getID(), binding.clCardMain);
+						ViewCompat.setTransitionName(binding.clCardMain, String.valueOf(item.getCity().getID()));
+						Log.i("ForecastID", "Adapter : " + item.getCity().getID());
+						listener.onForecastClicked(item.getCity().getID(), binding.clCardMain);
 					}
 				});
 			}
 		}
 		
-		private void displayDialog(EForecast forecast) {
+		private void displayDialog(ForecastModel forecast) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setTitle(context.getText(R.string.dialog_remove_city_make_sure))
 					.setMessage(String.format(context.getString(R.string.dialog_remove_city_content),
-					                          forecast.city.getName()))
+					                          forecast.getCityName()))
 					.setPositiveButton(context.getString(android.R.string.ok),
 					                   (dialog, which) -> removeForecast(forecast))
 					.setNegativeButton(context.getText(android.R.string.cancel), ((dialog, which) -> dialog.cancel()));
@@ -178,8 +180,8 @@ public class MainFragmentAdapter
 			builder.show();
 		}
 		
-		private void removeForecast(EForecast forecast) {
-			MainLib.removeForecastFor(forecast);
+		private void removeForecast(ForecastModel forecast) {
+			MainLib.removeForecastFor(forecast.getCityName(), forecast.getCity().getID());
 		}
 	}
 	

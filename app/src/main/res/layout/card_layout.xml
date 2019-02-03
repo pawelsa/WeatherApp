@@ -6,7 +6,7 @@
 
         <variable
             name="forecast"
-            type="com.example.weatherlibwithcityphotos.EForecast" />
+            type="com.example.pawel.weatherapp.ForecastToView" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@{forecast.cityName}"
+                    android:text="@{forecast.getCityName}"
                     android:textColor="@color/white"
                     android:textSize="45sp"
                     app:layout_constraintBottom_toBottomOf="@+id/fl_card_cityBackground"

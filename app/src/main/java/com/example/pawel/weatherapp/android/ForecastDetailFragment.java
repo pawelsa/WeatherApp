@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pawel.weatherapp.ForecastToView;
 import com.example.pawel.weatherapp.R;
+import com.example.pawel.weatherapp.WeatherModels.ForecastModel;
 import com.example.pawel.weatherapp.databinding.FragmentForecastDetailBinding;
-import com.example.weatherlibwithcityphotos.EForecast;
 import com.example.weatherlibwithcityphotos.MainLib;
 
 import androidx.annotation.NonNull;
@@ -26,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ForecastDetailFragment
 		extends Fragment {
 	private FragmentForecastDetailBinding binding;
-	private EForecast forecast;
+	private ForecastModel forecast;
 	
 	public ForecastDetailFragment() {
 		// Required empty public constructor
@@ -53,8 +54,8 @@ public class ForecastDetailFragment
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(eForecast -> {
-					forecast = eForecast;
-					binding.setForecast(forecast);
+					forecast = new ForecastModel(eForecast);
+					binding.setForecast(new ForecastToView(eForecast));
 					view.findViewById(R.id.cl_detail_main).setTransitionName(String.valueOf(itemId));
 					ChangeBounds changeBounds = new ChangeBounds();
 					changeBounds.setDuration(200L);
@@ -66,9 +67,9 @@ public class ForecastDetailFragment
 					                                                                  false));
 					binding.rvDetailWeathers.setHasFixedSize(true);
 					
-					RecyclerView.Adapter adapter = new WeatherItemAdapter(forecast.weatherList,
+					RecyclerView.Adapter adapter = new WeatherItemAdapter(forecast.getWeatherList(),
 					                                                      id -> binding.getForecast()
-							                                                      .setDisplayValue(forecast.weatherList
+							                                                      .setDisplayValue(forecast.getWeatherList()
 									                                                                       .get(id)));
 					binding.rvDetailWeathers.setAdapter(adapter);
 					startPostponedEnterTransition();

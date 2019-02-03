@@ -5,8 +5,9 @@ import android.util.Log;
 import com.example.pawel.weatherapp.Tools.ExceptionTester;
 import com.example.pawel.weatherapp.Tools.NoInternetConnection;
 import com.example.pawel.weatherapp.Tools.NotExists;
+import com.example.pawel.weatherapp.WeatherModels.ForecastModel;
 import com.example.pawel.weatherapp.android.AddLocalizationBottomSheet;
-import com.example.weatherlibwithcityphotos.EForecast;
+import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
 import com.example.weatherlibwithcityphotos.MainLib;
 
@@ -37,9 +38,9 @@ public class GeneralWeatherPresenter {
 	private ForecastsListener getForecastListener() {
 		return new ForecastsListener() {
 			@Override
-			public void onSuccess(EForecast forecast) {
-				Log.d("Presenter", "Forecast for : " + forecast.city.getName());
-				view.addItemToAdapter(forecast);
+			public void onSuccess(ForecastWithPhoto forecast) {
+				Log.d("Presenter", "ForecastToView for : " + forecast.getCityName());
+				view.addItemToAdapter(new ForecastModel(forecast));
 			}
 			
 			@Override
@@ -60,9 +61,9 @@ public class GeneralWeatherPresenter {
 			}
 			
 			@Override
-			public void removedForecast(EForecast forecast) {
-				Log.d("Presenter", "Remove : " + forecast.city.getName());
-				view.removeForecastFromAdapter(forecast);
+			public void removedForecast(ForecastWithPhoto forecast) {
+				Log.d("Presenter", "Remove : " + forecast.getCityName());
+				view.removeForecastFromAdapter(new ForecastModel(forecast));
 			}
 		};
 	}

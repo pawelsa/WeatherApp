@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.example.pawel.weatherapp.R;
+import com.example.pawel.weatherapp.WeatherModels.ForecastModel;
 import com.example.pawel.weatherapp.project.GeneralWeatherInterface;
 import com.example.pawel.weatherapp.project.GeneralWeatherPresenter;
-import com.example.weatherlibwithcityphotos.EForecast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -136,7 +136,7 @@ public class GeneralWeatherFragment
 	}
 	
 	@Override
-	public void addItemToAdapter(EForecast forecast) {
+	public void addItemToAdapter(ForecastModel forecast) {
 		if ( viewModel != null ) {
 			viewModel.addForecast(forecast);
 		}
@@ -149,7 +149,7 @@ public class GeneralWeatherFragment
 	}
 	
 	@Override
-	public void removeForecastFromAdapter(EForecast forecast) {
+	public void removeForecastFromAdapter(ForecastModel forecast) {
 		adapter.removeCity(forecast);
 	}
 	

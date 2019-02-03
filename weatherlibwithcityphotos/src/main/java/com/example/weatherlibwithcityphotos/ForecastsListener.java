@@ -2,11 +2,11 @@ package com.example.weatherlibwithcityphotos;
 
 public interface ForecastsListener {
 	
-	void onSuccess(EForecast forecast);
+	void onSuccess(ForecastWithPhoto forecast);
 	
 	void onError(Throwable t);
 	
 	void isLoading(boolean loading);
 	
-	void removedForecast(EForecast forecast);
+	void removedForecast(ForecastWithPhoto forecast);
 }

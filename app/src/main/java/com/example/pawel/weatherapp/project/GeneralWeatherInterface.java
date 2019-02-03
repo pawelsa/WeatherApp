@@ -1,14 +1,14 @@
 package com.example.pawel.weatherapp.project;
 
-import com.example.weatherlibwithcityphotos.EForecast;
+import com.example.pawel.weatherapp.WeatherModels.ForecastModel;
 
 public interface GeneralWeatherInterface {
 	
-	void addItemToAdapter(EForecast forecast);
+	void addItemToAdapter(ForecastModel forecast);
 	
 	void isRefreshing(boolean refresh);
 	
-	void removeForecastFromAdapter(EForecast forecast);
+	void removeForecastFromAdapter(ForecastModel forecast);
     
     void showSnackbar(String message);
 }

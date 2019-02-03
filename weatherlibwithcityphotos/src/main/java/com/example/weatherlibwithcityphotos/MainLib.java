@@ -42,7 +42,7 @@ public class MainLib {
 		WeatherLib.downloadNewForecastFor(cityName);
 	}
 	
-	public static Maybe<EForecast> readForecastFor(int cityID) {
+	public static Maybe<ForecastWithPhoto> readForecastFor(int cityID) {
 		return WeatherLib.readForecastFor(cityID)
 				.flatMap(forecast -> getPhotoFor(forecast)
 						.toMaybe()
@@ -54,14 +54,14 @@ public class MainLib {
 		return WeatherLib.getForecastCount();
 	}
 	
-	private static Single<EForecast> getPhotoFor(Forecast forecast) {
+	private static Single<ForecastWithPhoto> getPhotoFor(Forecast forecast) {
 		return PhotoDownload.getPhoto(forecast.city.name)
 				.map(photo -> {
-					EForecast eForecast = new EForecast(forecast);
-					eForecast.city.setPhotoReference(photo);
-					return eForecast;
+					ForecastWithPhoto forecastWithPhoto = new ForecastWithPhoto(forecast);
+					forecastWithPhoto.getCity().setPhotoReference(photo);
+					return forecastWithPhoto;
 				})
-				.onErrorResumeNext(Single.just(new EForecast(forecast)));
+				.onErrorResumeNext(Single.just(new ForecastWithPhoto(forecast)));
 	}
 	
 	public static void refreshForecast() {
@@ -83,9 +83,13 @@ public class MainLib {
 		ListenersManager.removeListener(listener);
 	}
 	
-	public static void removeForecastFor(EForecast forecast) {
-		PhotoDownload.removePhotoFor(forecast.city.getName());
-		WeatherLib.removeForecastFor(forecast.city.getID(), forecast.city.getName());
+	public static void removeForecastFor(ForecastWithPhoto forecast) {
+		removeForecastFor(forecast.getCityName(), forecast.getCity().getID());
+	}
+	
+	public static void removeForecastFor(String cityName, int cityID) {
+		PhotoDownload.removePhotoFor(cityName);
+		WeatherLib.removeForecastFor(cityID, cityName);
 	}
 	
 	private static ForecastListener getForecastListener() {
@@ -109,7 +113,7 @@ public class MainLib {
 			
 			@Override
 			public void removedForecast(Forecast forecast) {
-				ListenersManager.removedCityListener(new EForecast(forecast));
+				ListenersManager.removedCityListener(new ForecastWithPhoto(forecast));
 			}
 		};
 	}

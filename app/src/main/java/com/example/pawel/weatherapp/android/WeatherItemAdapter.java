@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.pawel.weatherapp.R;
+import com.example.pawel.weatherapp.WeatherModels.HourlyWeather;
 import com.example.weatherlibwithcityphotos.WeatherIcons;
-import com.example.weatherlibwithcityphotos.WeatherModels.CurrentWeather;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -25,13 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class WeatherItemAdapter
 		extends RecyclerView.Adapter<WeatherItemAdapter.WeatherViewHolder> {
 	
-	private List<CurrentWeather> currentWeatherList;
+	private List<HourlyWeather> hourlyWeatherList;
 	private OnWeatherClickListener listener;
 	private int lastSelectedItem = 0;
 	
-	public WeatherItemAdapter(List<CurrentWeather> currentWeatherList,
+	public WeatherItemAdapter(List<HourlyWeather> hourlyWeatherList,
 	                          OnWeatherClickListener listener) {
-		this.currentWeatherList = currentWeatherList;
+		this.hourlyWeatherList = hourlyWeatherList;
 		this.listener = listener;
 	}
 	
@@ -49,7 +49,7 @@ public class WeatherItemAdapter
 	
 	@Override
 	public int getItemCount() {
-		return currentWeatherList.size();
+		return hourlyWeatherList.size();
 	}
 	
 	class WeatherViewHolder
@@ -67,16 +67,16 @@ public class WeatherItemAdapter
 		}
 		
 		void bind(int position) {
-			CurrentWeather currentWeather = currentWeatherList.get(position);
-			Log.i("Data", "Pos : " + position + ", temp : " + currentWeather.getMain().getTemp());
+			HourlyWeather hourlyWeather = hourlyWeatherList.get(position);
+			Log.i("Data", "Pos : " + position + ", temp : " + hourlyWeather.getTemp());
 			Glide.with(weatherIcon)
-					.load(WeatherIcons.getIcon(currentWeather.getWeather().getIcon()))
+					.load(WeatherIcons.getIcon(hourlyWeather.getIcon()))
 					.apply(new RequestOptions().centerCrop())
 					.into(weatherIcon);
 			
 			Locale current = this.itemView.getResources().getConfiguration().getLocales().get(0);
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", current);
-			String string = dateFormat.format(currentWeather.getDt() * 1000);
+			String string = dateFormat.format(hourlyWeather.getDt() * 1000);
 			
 			time.setText(string);
 			card.setOnClickListener(v -> {

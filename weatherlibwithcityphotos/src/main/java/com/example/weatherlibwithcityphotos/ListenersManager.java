@@ -21,7 +21,7 @@ class ListenersManager {
 		Log.d("Listener", "Removed, size : " + listeners.size());
 	}
 	
-	static void onSuccessListener(EForecast forecast) {
+	static void onSuccessListener(ForecastWithPhoto forecast) {
 		for ( ForecastsListener listener : listeners ) {
 			listener.onSuccess(forecast);
 		}
@@ -39,7 +39,7 @@ class ListenersManager {
 		}
 	}
 	
-	static void removedCityListener(EForecast forecast) {
+	static void removedCityListener(ForecastWithPhoto forecast) {
         for (ForecastsListener listener : listeners) {
             listener.removedForecast(forecast);
         }
