@@ -16,6 +16,7 @@ import com.example.weatherlibwithcityphotos.WeatherIcons;
 import java.text.Collator;
 
 import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 
@@ -34,6 +35,7 @@ public class ForecastToView
 	public ObservableField<String> dispClouds = new ObservableField<>("");
 	public ObservableField<String> dispRain = new ObservableField<>("");
 	public ObservableField<String> dispSnow = new ObservableField<>("");
+	public ObservableBoolean downloaded = new ObservableBoolean(false);
 	
 	private int[] tempArray;
 	
@@ -42,7 +44,7 @@ public class ForecastToView
 	
 	public ForecastToView(ForecastWithPhoto forecast) {
 		super(forecast);
-		
+		downloaded.set(this.isDownloaded());
 		if ( this.isDownloaded() ) {
 			setDisplayValue(0);
 			tempArray = new int[5];
