@@ -4,11 +4,13 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.pawel.weatherapp.ForecastToView;
-import com.example.pawel.weatherapp.databinding.CardLayoutBinding;
+import com.example.pawel.weatherapp.R;
+import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ForecastVH> {
@@ -25,7 +27,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ForecastVH> {
     @NonNull
     @Override
     public ForecastVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ForecastVH(CardLayoutBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+
+        CardMainForecastBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.card_main_forecast, parent, false);
+
+        return new ForecastVH(binding);
     }
 
     @Override
@@ -37,11 +42,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ForecastVH> {
 
         if (forecastList.contains(forecast)) {
             int index = forecastList.indexOf(forecast);
-            forecastList.set(index, forecast);
-            notifyItemChanged(index);
+            forecastList.get(index).updateModelWithNewData(forecast);
         } else {
             forecastList.add(forecast);
-            notifyItemInserted(forecastList.size() - 1);
+            notifyItemInserted(forecastList.size());
         }
     }
 
@@ -53,9 +57,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ForecastVH> {
 
     class ForecastVH extends RecyclerView.ViewHolder {
 
-        private CardLayoutBinding binding;
+        private CardMainForecastBinding binding;
 
-        public ForecastVH(CardLayoutBinding binding) {
+        public ForecastVH(CardMainForecastBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

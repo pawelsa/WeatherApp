@@ -38,11 +38,13 @@
 
                 <include
                     android:id="@+id/card_header"
-                    layout="@layout/image_header" />
+                    layout="@layout/header_main_landscape"
+                    app:forecast="@{forecast}" />
 
                 <include
                     android:id="@+id/card_main_info"
-                    layout="@layout/main_detailed_weather" />
+                    layout="@layout/main_forecast"
+                    app:forecast="@{forecast}" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

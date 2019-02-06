@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/generalWeatherFragment"
-        android:name="com.example.pawel.weatherapp.android.GeneralWeatherFragment"
+        android:name="com.example.pawel.weatherapp.android.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
@@ -18,8 +18,7 @@
     <fragment
         android:id="@+id/forecastDetailFragment"
         android:name="com.example.pawel.weatherapp.android.ForecastDetailFragment"
-        android:label="fragment_forecast_detail"
-        tools:layout="@layout/fragment_forecast_detail">
+        android:label="fragment_forecast_detail">
         <argument
             android:name="cityId"
             app:argType="integer" />

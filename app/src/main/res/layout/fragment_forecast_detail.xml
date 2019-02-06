@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fl_detail_cityBackground"
             tools:itemCount="1"
-            tools:listitem="@layout/weather_icon"
+            tools:listitem="@layout/item_detail_icon"
             tools:orientation="horizontal" />
 
         <FrameLayout
