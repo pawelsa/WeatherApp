@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ListenersManager {
-	
+
+    private static String TAG = "ListenersManager";
+
 	private static List<ForecastsListener> listeners = new ArrayList<>();
 	
 	static void addListener(ForecastsListener listener) {

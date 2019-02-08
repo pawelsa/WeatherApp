@@ -32,6 +32,10 @@ public class ForecastModel {
         this.downloaded = forecastModel.isDownloaded();
     }
 
+    public int getCityID() {
+        return this.city.getID();
+    }
+
     public String getCityName() {
         return this.city.getName();
     }

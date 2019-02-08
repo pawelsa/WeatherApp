@@ -10,7 +10,6 @@ import com.example.pawel.weatherapp.project.ColorHelper;
 import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 import com.example.weatherlibwithcityphotos.WeatherIcons;
 
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
@@ -46,14 +45,6 @@ public class ForecastToView
     public ForecastToView(ForecastModel forecastModel) {
         super(forecastModel);
         initView();
-    }
-
-    @BindingAdapter("bind:init")
-    public static void onTempChanged(SeekBar seekBar, int[] tempArray) {
-        int progressColor = ColorHelper.getTempColor(tempArray, 0);
-        int thumbColor = ColorHelper.getThumbColor(tempArray, 0);
-        seekBar.getProgressDrawable().setColorFilter(progressColor, PorterDuff.Mode.MULTIPLY);
-        seekBar.getThumb().setColorFilter(thumbColor, PorterDuff.Mode.SRC_ATOP);
     }
 
     public int[] getTempArray() {

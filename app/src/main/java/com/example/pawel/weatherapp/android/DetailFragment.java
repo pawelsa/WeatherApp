@@ -9,6 +9,7 @@ import com.example.pawel.weatherapp.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 public class DetailFragment extends Fragment {
@@ -22,5 +23,8 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Toolbar toolbar = getActivity().findViewById(R.id.tb_main_toolbar);
+        toolbar.setTitle("moj tytul");
     }
 }

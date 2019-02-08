@@ -88,8 +88,8 @@ public class ForecastStreams {
 						.subscribeOn(Schedulers.io())
 						.toFlowable()
 				);
-		
-		Flowable<Forecast> errorHandler = Flowable.just(new Forecast())
+
+        Flowable<Forecast> errorHandler = getStartLoadingStream().flatMap(forecast -> Flowable.just(new Forecast()))
 				.flatMap(forecast -> {
 					ListenerManager.onErrorListener(new NoInternetConnection());
 					return Flowable.empty();
