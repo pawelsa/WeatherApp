@@ -2,4 +2,5 @@
     <string name="app_name">WeatherLib</string>
     <string name="city_does_not_exists">City doesn\'t exist</string>
     <string name="no_internet_connection">There is no internet connection</string>
+    <string name="data_is_up_to_date">Data is up to date</string>
 </resources>

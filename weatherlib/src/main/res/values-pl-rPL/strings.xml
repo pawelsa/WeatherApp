@@ -3,4 +3,5 @@
     <string name="app_name">Pogodynka</string>
     <string name="city_does_not_exists">Nie ma takiego miasta</string>
     <string name="no_internet_connection">Nie ma połączenia internetowego</string>
+    <string name="data_is_up_to_date">Dane są aktualne</string>
 </resources>

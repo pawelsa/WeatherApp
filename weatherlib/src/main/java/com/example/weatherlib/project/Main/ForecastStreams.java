@@ -3,6 +3,7 @@ package com.example.weatherlib.project.Main;
 import com.example.weatherlib.project.API.ForecastDownload;
 import com.example.weatherlib.project.Database.DatabaseManager;
 import com.example.weatherlib.project.GPSLocation;
+import com.example.weatherlib.project.Tools.DataIsUpToDate;
 import com.example.weatherlib.project.Tools.NetworkCheck;
 import com.example.weatherlib.project.Tools.NoInternetConnection;
 import com.example.weatherlib.project.WeatherModel.CurrentWeather;
@@ -25,6 +26,7 @@ import static com.example.weatherlib.project.Main.WeatherLib.USED_UNIT;
 
 public class ForecastStreams {
 	
+	private static final String TAG = ForecastStreams.class.getName();
 	
 	private static CompositeDisposable disposables = new CompositeDisposable();
 	
@@ -43,7 +45,15 @@ public class ForecastStreams {
 		Flowable<Forecast> startLoadingForecasts = getStartLoadingForecastStream();
 		
 		Flowable<Forecast> refreshForecast =
-				ifOldDataThenUpdate(getStartLoadingForecastStream());
+				NetworkCheck.isConnectedToNetwork()
+						.doOnNext(aBoolean -> {
+							if ( ! aBoolean ) {
+								ListenerManager.onErrorListener(new NoInternetConnection());
+							}
+						})
+						.filter(aBoolean -> aBoolean)
+						.flatMap(aBoolean ->
+								         ifOldDataThenUpdate(getStartLoadingForecastStream()));
 		
 		Flowable<Forecast> connectable = startLoadingForecasts.mergeWith(refreshForecast);
 		disposables.add(getLoadingDisposable(connectable));
@@ -64,6 +74,11 @@ public class ForecastStreams {
 						                   ts.getTime()))))
 				.queryList()
 				.toFlowable()
+				.doOnNext(list -> {
+					if ( list.isEmpty() ) {
+						ListenerManager.onErrorListener(new DataIsUpToDate());
+					}
+				})
 				.filter(currentWeathers -> currentWeathers.size() > 0)
 				.flatMap(currentWeathers -> getRefreshingForecastStream(stream))
 				/*.flatMap(currentWeathers -> {
@@ -88,12 +103,10 @@ public class ForecastStreams {
 						.subscribeOn(Schedulers.io())
 						.toFlowable()
 				);
-
-        Flowable<Forecast> errorHandler = getStartLoadingStream().flatMap(forecast -> Flowable.just(new Forecast()))
-				.flatMap(forecast -> {
-					ListenerManager.onErrorListener(new NoInternetConnection());
-					return Flowable.empty();
-				});
+		
+		Flowable<Forecast> errorHandler = getStartLoadingStream().flatMap(forecast -> Flowable.just(new Forecast()))
+				.doOnNext(forecast -> ListenerManager.onErrorListener(new NoInternetConnection()))
+				.flatMap(forecast -> Flowable.empty());
 		
 		return NetworkCheck.isConnectedToNetwork()
 				.subscribeOn(Schedulers.io())

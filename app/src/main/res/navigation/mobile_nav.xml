@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/forecastDetailFragment"
-        android:name="com.example.pawel.weatherapp.android.DetailFragment"
+        android:name="com.example.pawel.weatherapp.android.detail.DetailFragment"
         android:label="{cityName}"
         tools:layout="@layout/fragment_forecast_detail">
         <argument

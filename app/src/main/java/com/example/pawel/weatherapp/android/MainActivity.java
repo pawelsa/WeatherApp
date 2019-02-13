@@ -9,9 +9,6 @@ import com.example.weatherlibwithcityphotos.MainLib;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableBoolean;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import static com.example.pawel.weatherapp.android.MyApplication.GOOGLE_API_KEY;
 import static com.example.pawel.weatherapp.android.MyApplication.WEATHER_API_KEY;
@@ -25,14 +22,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setFABcontroller(showFAB);
 
         setupNavigation();
 
         MainLib.setup(this, WEATHER_API_KEY, GOOGLE_API_KEY);
     }
-
-    private void setupNavigation() {
+	
+	private void setupNavigation() {/*
         NavController controller = Navigation.findNavController(this, R.id.main_activity_fragment);
         NavigationUI.setupWithNavController(findViewById(R.id.ctb_main_collapse), findViewById(R.id.tb_main_toolbar), controller);
 
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        });*/
     }
 
 }

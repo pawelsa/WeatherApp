@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="forecast"
+            type="com.example.pawel.weatherapp.ForecastToView" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_detail_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_detail_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{String.format(@string/detail_temp,forecast.dispTemp)}"
+            android:textSize="40sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="27C" />
+
+        <TextView
+            android:id="@+id/tv_detail_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@{forecast.dispDescription}"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_detail_temp"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_temp"
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_temp"
+            tools:text="sunny" />
+
+        <TextView
+            android:id="@+id/tv_detail_wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{String.format(@string/detail_wind,forecast.dispWind)}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_snow"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_snow"
+            tools:text="20m/s" />
+
+        <TextView
+            android:id="@+id/tv_detail_temp_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@{String.format(@string/detail_temp_min,forecast.dispTempMin)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_temp" />
+
+        <TextView
+            android:id="@+id/tv_detail_temp_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{String.format(@string/detail_temp_max,forecast.dispTempMax)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_temp_min" />
+
+        <TextView
+            android:id="@+id/tv_detail_pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@{String.format(@string/detail_pressure,forecast.dispPressure)}"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_temp_min"
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_temp_min" />
+
+        <TextView
+            android:id="@+id/tv_detail_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{String.format(@string/detail_humidity,forecast.dispHumidity)}"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_pressure"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_pressure" />
+
+        <TextView
+            android:id="@+id/tv_detail_clouds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.format(@string/detail_clouds,forecast.dispClouds)}"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_detail_temp"
+            app:layout_constraintStart_toStartOf="@+id/tv_detail_rain" />
+
+        <TextView
+            android:id="@+id/tv_detail_rain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@{String.format(@string/detail_rain,forecast.dispRain)}"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_description"
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_temp" />
+
+        <TextView
+            android:id="@+id/tv_detail_snow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@{String.format(@string/detail_snow,forecast.dispSnow)}"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_pressure"
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_pressure" />
+
+        <SeekBar
+            android:id="@+id/sb_detail_change"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:max="10"
+            android:onProgressChanged="@{forecast.onValueChanged}"
+            android:progress="3"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
