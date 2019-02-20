@@ -13,14 +13,14 @@ public class ForecastModel {
 	private City city;
 	
 	
-	public ForecastModel() {
+	protected ForecastModel() {
 	}
 	
 	public ForecastModel(ForecastModel forecastModel) {
 		updateModelWithNewData(forecastModel);
 	}
 	
-	public void updateModelWithNewData(ForecastModel forecastModel) {
+	private void updateModelWithNewData(ForecastModel forecastModel) {
 		this.city = forecastModel.city;
 		this.weatherList = forecastModel.getWeatherList();
 		this.downloaded = forecastModel.isDownloaded();
@@ -80,11 +80,11 @@ public class ForecastModel {
 		instance.setStrength(Collator.NO_DECOMPOSITION);
 		if ( obj instanceof ForecastModel ) {
 			ForecastModel other = ( ForecastModel ) obj;
-			int equalName = instance.compare(this.city.getName(), other.getCityName());
-			result = this.city.getID() == other.city.getID() || equalName == 0;
+			int equalName = instance.compare(this.getCityName(), other.getCityName());
+			result = this.getCityID() == other.getCityID() || equalName == 0;
 		} else if ( obj instanceof String ) {
 			String otherName = ( String ) obj;
-			int equalName = instance.compare(this.city.getName(), otherName);
+			int equalName = instance.compare(this.getCityName(), otherName);
 			result = equalName == 0;
 		}
 		return result;

@@ -1,6 +1,5 @@
 package com.example.pawel.weatherapp.android.main;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.example.pawel.weatherapp.ForecastToView;
@@ -16,14 +15,14 @@ public class MainFragmentViewModel
 		extends ViewModel {
 	
 	private static final String TAG = MainFragmentViewModel.class.getSimpleName();
-	public MutableLiveData<CardMainForecastBinding> selected;
-	public MutableLiveData<Pair> selectedToRemove;
+	private MutableLiveData<CardMainForecastBinding> selected;
+	private MutableLiveData<Pair> selectedToRemove;
 	public ObservableInt loading;
 	private ForecastsList forecastMemory;
 	private MainForecastAdapter adapter;
 	private MainForecastAdapter.ForecastClickListener adapterListener = getAdapterListener();
 	
-	public void init() {
+	void init() {
 		if ( forecastMemory != null ) {
 			forecastMemory.destroy();
 		}
@@ -38,33 +37,32 @@ public class MainFragmentViewModel
 		forecastMemory.fetchList();
 	}
 	
-	public MutableLiveData<List<ForecastToView>> getForecasts() {
-		return forecastMemory.getLiveForecastList();
+	public void onRefresh() {
+		forecastMemory.refreshList();
 	}
 	
 	public MainForecastAdapter getAdapter() {
 		return adapter;
 	}
 	
-	public void setForecastsInAdapter(List<ForecastToView> breeds) {
-		Log.d(TAG, "setForecastsInAdapter: " + breeds.size());
-		this.adapter.setForecasts(breeds);
+	MutableLiveData<List<ForecastToView>> getForecasts() {
+		return forecastMemory.getLiveForecastList();
+	}
+	
+	void setForecastsInAdapter(List<ForecastToView> forecastToViewList) {
+		this.adapter.submitList(forecastToViewList);
 		this.adapter.notifyDataSetChanged();
 	}
 	
-	public MutableLiveData<CardMainForecastBinding> getSelected() {
+	MutableLiveData<CardMainForecastBinding> getSelected() {
 		return selected;
 	}
 	
-	public MutableLiveData<Pair> getSelectedToRemove() {
+	MutableLiveData<Pair> getSelectedToRemove() {
 		return selectedToRemove;
 	}
 	
-	public void onRefresh() {
-		forecastMemory.refreshList();
-	}
-	
-	public void setLoading(boolean loading) {
+	void setLoading(boolean loading) {
 		this.loading.set(loading ? 1 : 0);
 	}
 	

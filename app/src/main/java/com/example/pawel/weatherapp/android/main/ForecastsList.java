@@ -13,26 +13,51 @@ import java.util.List;
 import androidx.databinding.BaseObservable;
 import androidx.lifecycle.MutableLiveData;
 
-public class ForecastsList
+class ForecastsList
 		extends BaseObservable {
 	
-	String TAG = "ForecastsList";
+	private static final String TAG = ForecastsList.class.getName();
 	
-	List<ForecastToView> forecastToViewList = new ArrayList<>();
-	MutableLiveData<List<ForecastToView>> liveForecastList = new MutableLiveData<>();
-	ForecastsListener listener;
+	private List<ForecastToView> forecastToViewList = new ArrayList<>();
+	private MutableLiveData<List<ForecastToView>> liveForecastList = new MutableLiveData<>();
+	private ForecastsListener listener = prepareForecastsListener();
 	
-	public ForecastsList() {
+	ForecastsList() {
 		fetchList();
 	}
 	
-	public void fetchList() {
-		prepareForecastsListener();
+	void fetchList() {
+		Log.d(TAG, "fetchList: ");
 		MainLib.addListener(listener);
 		MainLib.streamForecastsWithRefresh();
 	}
 	
-	private void prepareForecastsListener() {
+	ForecastsList(List<ForecastToView> forecastToViewList) {
+		this.forecastToViewList = forecastToViewList;
+		liveForecastList.setValue(forecastToViewList);
+	}
+	
+	List<ForecastToView> getForecastToViewList() {
+		return forecastToViewList;
+	}
+	
+	void refreshList() {
+		Log.d(TAG, "refreshList: ");
+		MainLib.addListener(listener);
+		MainLib.refreshForecast();
+	}
+	
+	void destroy() {
+		if ( listener != null ) {
+			listener = null;
+		}
+	}
+	
+	MutableLiveData<List<ForecastToView>> getLiveForecastList() {
+		return liveForecastList;
+	}
+	
+	private ForecastsListener prepareForecastsListener() {
 		if ( listener == null ) {
 			listener = new ForecastsListener() {
 				@Override
@@ -58,9 +83,10 @@ public class ForecastsList
 				}
 			};
 		}
+		return listener;
 	}
 	
-	public void addForecast(ForecastToView forecastToView) {
+	private void addForecast(ForecastToView forecastToView) {
 		int index = forecastToViewList.indexOf(forecastToView);
 		if ( index == - 1 ) {
 			forecastToViewList.add(forecastToView);
@@ -70,37 +96,11 @@ public class ForecastsList
 		liveForecastList.setValue(forecastToViewList);
 	}
 	
-	public void removeForecast(ForecastToView forecast) {
+	private void removeForecast(ForecastToView forecast) {
 		int index = forecastToViewList.indexOf(forecast);
-		Log.d(TAG, "removeForecast: " + index);
 		if ( index > - 1 ) {
 			forecastToViewList.remove(index);
 		}
 		liveForecastList.setValue(forecastToViewList);
-	}
-	
-	public ForecastsList(List<ForecastToView> forecastToViewList) {
-		this.forecastToViewList = forecastToViewList;
-		liveForecastList.setValue(forecastToViewList);
-	}
-	
-	public MutableLiveData<List<ForecastToView>> getLiveForecastList() {
-		return liveForecastList;
-	}
-	
-	public List<ForecastToView> getForecastToViewList() {
-		return forecastToViewList;
-	}
-	
-	public void refreshList() {
-		prepareForecastsListener();
-		MainLib.addListener(listener);
-		MainLib.refreshForecast();
-	}
-	
-	void destroy() {
-		if ( listener != null ) {
-			listener = null;
-		}
 	}
 }

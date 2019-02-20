@@ -8,29 +8,26 @@ import com.example.pawel.weatherapp.ForecastToView;
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainForecastAdapter
-		extends RecyclerView.Adapter<MainForecastAdapter.ForecastCardViewHolder> {
+		extends ListAdapter<ForecastToView, MainForecastAdapter.ForecastCardViewHolder> {
 	
 	private static final String TAG = MainForecastAdapter.class.getName();
 	
-	private List<ForecastToView> forecasts = new ArrayList<>();
 	private ForecastClickListener listener;
 	
-	public MainForecastAdapter(ForecastClickListener listener) {
+	
+	MainForecastAdapter(ForecastClickListener listener) {
+		super(new ForecastDiffCallback());
 		this.listener = listener;
 	}
 	
 	@NonNull
 	public ForecastCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		Log.d(TAG, "onCreateViewHolder: ");
 		CardMainForecastBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
 		                                                          R.layout.card_main_forecast,
 		                                                          parent,
@@ -40,27 +37,10 @@ public class MainForecastAdapter
 	
 	@Override
 	public void onBindViewHolder(@NonNull ForecastCardViewHolder holder, int position) {
-		Log.d(TAG, "onBindViewHolder: ");
-		holder.bind(forecasts.get(position), position);
+		holder.bind(getItem(position), position);
 	}
 	
-	@Override
-	public int getItemCount() {
-		return forecasts == null ? 0 : forecasts.size();
-	}
-	
-	public void setForecasts(List<ForecastToView> forecastToViews) {
-		if ( this.forecasts != null && forecastToViews != null ) {
-			DiffUtil.DiffResult diffs = DiffUtil.calculateDiff(new ForecastDiffUtil(this.forecasts, forecastToViews));
-			diffs.dispatchUpdatesTo(this);
-		}
-		this.forecasts.clear();
-		this.forecasts.addAll(forecastToViews);
-		/*notifyDataSetChanged();*/
-	}
-	
-	
-	public class ForecastCardViewHolder
+	class ForecastCardViewHolder
 			extends RecyclerView.ViewHolder {
 		final CardMainForecastBinding binding;
 		
