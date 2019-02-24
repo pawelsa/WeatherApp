@@ -4,9 +4,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.example.pawel.weatherapp.ForecastToView;
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
+import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -64,7 +64,6 @@ public class MainForecastAdapter
 	
 	interface ForecastClickListener {
 		void onForecastClicked(CardMainForecastBinding binding);
-		
 		void onForecastLongClicked(String cityName, int cityID);
 	}
 	

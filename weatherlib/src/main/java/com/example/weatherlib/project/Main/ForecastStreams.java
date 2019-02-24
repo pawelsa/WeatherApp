@@ -154,6 +154,10 @@ public class ForecastStreams {
 				                                     .doOnError(throwable -> ListenerManager.isLoadingListener(false))));
 	}
 	
+	public static void readForecastFor(int cityID) {
+		disposables.add(getLoadingDisposable(DatabaseManager.readForecastFor(cityID)));
+	}
+	
 	static void downloadDataForNewUnits() {
 		Flowable<Forecast> startLoadingForecasts = getStartLoadingForecastStream();
 		

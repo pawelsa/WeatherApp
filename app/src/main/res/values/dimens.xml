@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_descriptions">20sp</dimen>
+    <dimen name="header_height">160dp</dimen>
+    <dimen name="header_detail_height">240dp</dimen>
+</resources>

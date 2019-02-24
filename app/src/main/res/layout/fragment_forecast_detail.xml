@@ -32,7 +32,7 @@
 
                 <include
                     android:id="@+id/detail_header_gradient"
-                    layout="@layout/header_gradient"
+                    layout="@layout/header_detail_gradient"
                     app:forecast="@{viewModel.getForecast()}"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7" />

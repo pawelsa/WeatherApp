@@ -7,12 +7,9 @@ import android.content.res.Resources;
 import com.example.weatherlib.project.Database.DatabaseManager;
 import com.example.weatherlib.project.GPSLocation;
 import com.example.weatherlib.project.Tools.Units;
-import com.example.weatherlib.project.WeatherModel.Forecast;
 import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
-
-import io.reactivex.Maybe;
 
 import static com.example.weatherlib.project.Main.ForecastStreams.downloadDataForNewUnits;
 
@@ -26,8 +23,8 @@ public class WeatherLib {
 	
 	private static Activity activity;
 	
+	// TODO: 21.02.2019 when downloading was stopped by closing the app, it should download once again forecast
 	/*   TODO sprawdzic czy jest sprawdzany  status okna pause restart  */
-	/*   TODO niektóre modele nie są przypisane do konkretnej pogody   */
 	public static void setupWeatherLib(Activity activity, String weatherApiKey) {
 		
 		WEATHER_API_KEY = weatherApiKey;
@@ -56,8 +53,8 @@ public class WeatherLib {
 		ForecastStreams.streamForecastsWithRefresh();
 	}
 	
-	public static Maybe<Forecast> readForecastFor(int cityID) {
-		return DatabaseManager.readForecastFor(cityID);
+	public static void readForecastFor(int cityID) {
+		ForecastStreams.readForecastFor(cityID);
 	}
 	
 	public static int getForecastCount() {

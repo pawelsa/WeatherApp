@@ -2,8 +2,8 @@ package com.example.pawel.weatherapp.android.main;
 
 import android.util.Pair;
 
-import com.example.pawel.weatherapp.ForecastToView;
 import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
+import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 
 import java.util.List;
 

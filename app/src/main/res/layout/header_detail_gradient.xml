@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/iv_detail_header_cityNameBackground"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/header_height"
+                android:layout_height="@dimen/header_detail_height"
                 android:background="@drawable/city_building"
                 android:contentDescription="@string/city_landscape"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
             <View
                 android:id="@+id/v_detail_header_gradient"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/header_height"
+                android:layout_height="@dimen/header_detail_height"
                 android:background="@drawable/gradient_city_name" />
 
         </FrameLayout>

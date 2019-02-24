@@ -1,8 +1,6 @@
 package com.example.pawel.weatherapp.android.detail;
 
-import android.widget.Adapter;
-
-import com.example.pawel.weatherapp.ForecastToView;
+import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
@@ -14,19 +12,23 @@ public class DetailViewModel
 	
 	public ObservableBoolean isLoading;
 	private MutableLiveData<ForecastToView> forecastToView;
-	private Adapter adapter;
+	private HourlyListAdapter adapter;
 	
 	void init() {
 		forecastToView = new MutableLiveData<>();
 		isLoading = new ObservableBoolean();
-		//  TODO : adapter init, and pushing list of HourlyWeather
+		adapter = new HourlyListAdapter(position -> {
+			if ( position > - 1 ) {
+				forecastToView.getValue().setDisplayValue(position);
+			}
+		});
 	}
 	
 	public LiveData<ForecastToView> getForecast() {
 		return forecastToView;
 	}
 	
-	public Adapter getAdapter() {
+	public HourlyListAdapter getAdapter() {
 		return adapter;
 	}
 	
@@ -36,6 +38,7 @@ public class DetailViewModel
 	
 	void addNewForecast(ForecastToView forecast) {
 		forecastToView.setValue(forecast);
+		adapter.setHourlyWeatherList(forecast.getWeatherList());
 	}
 	
 }

@@ -2,7 +2,7 @@ package com.example.pawel.weatherapp.android.main;
 
 import android.util.Log;
 
-import com.example.pawel.weatherapp.ForecastToView;
+import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
 import com.example.weatherlibwithcityphotos.MainLib;

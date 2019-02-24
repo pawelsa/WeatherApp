@@ -24,5 +24,6 @@
     <string name="detail_clouds">Clouds %s%%</string>
     <string name="detail_rain">Rain in 3h %s</string>
     <string name="detail_snow">Snow in 3h %s</string>
+    <string name="simple_date">%1$s %2$s</string>
 
 </resources>

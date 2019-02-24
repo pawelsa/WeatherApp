@@ -9,7 +9,6 @@ import com.example.weatherlib.project.Main.WeatherLib;
 import com.example.weatherlib.project.Tools.Units;
 import com.example.weatherlib.project.WeatherModel.Forecast;
 
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -42,13 +41,9 @@ public class MainLib {
 		WeatherLib.downloadNewForecastFor(cityName);
 	}
 	
-	public static Maybe<ForecastWithPhoto> readForecastFor(int cityID) {
-		return WeatherLib.readForecastFor(cityID)
-				.flatMap(forecast -> getPhotoFor(forecast)
-						.toMaybe()
-				);
+	public static void readForecastFor(int cityID) {
+		WeatherLib.readForecastFor(cityID);
 	}
-	
 	
 	public static int getForecastCount() {
 		return WeatherLib.getForecastCount();

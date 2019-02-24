@@ -1,4 +1,4 @@
-package com.example.pawel.weatherapp.WeatherModels;
+package com.example.pawel.weatherapp.weatherModels;
 
 import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 

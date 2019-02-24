@@ -7,7 +7,7 @@
 
         <variable
             name="forecast"
-            type="com.example.pawel.weatherapp.ForecastToView" />
+            type="com.example.pawel.weatherapp.weatherModels.ForecastToView" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,7 @@
                 android:orientation="vertical">
 
                 <include
-                    android:id="@+id/card_header"
+                    android:id="@+id/card_detail_header"
                     layout="@layout/header_main_landscape"
                     app:forecast="@{forecast}" />
 

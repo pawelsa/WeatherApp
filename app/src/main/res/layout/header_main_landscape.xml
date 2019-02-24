@@ -5,7 +5,7 @@
 
         <variable
             name="forecast"
-            type="com.example.pawel.weatherapp.ForecastToView" />
+            type="com.example.pawel.weatherapp.weatherModels.ForecastToView" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,12 +13,12 @@
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/v_header_gradient"
+            android:id="@+id/v_detail_header_gradient"
             layout="@layout/header_gradient"
             app:forecast="@{forecast}" />
 
         <TextView
-            android:id="@+id/tv_header_city_name"
+            android:id="@+id/tv_detail_header_city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

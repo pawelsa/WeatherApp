@@ -1,11 +1,9 @@
-package com.example.pawel.weatherapp;
+package com.example.pawel.weatherapp.weatherModels;
 
 import android.graphics.PorterDuff;
 import android.util.Log;
 import android.widget.SeekBar;
 
-import com.example.pawel.weatherapp.WeatherModels.ForecastModel;
-import com.example.pawel.weatherapp.WeatherModels.HourlyWeather;
 import com.example.pawel.weatherapp.project.ColorHelper;
 import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 import com.example.weatherlibwithcityphotos.WeatherIcons;
@@ -51,7 +49,7 @@ public class ForecastToView
 		}
 	}
 	
-	private void setDisplayValue(int position) {
+	public void setDisplayValue(int position) {
 		if ( ! getWeatherList().isEmpty() ) {
 			HourlyWeather hourlyWeather = getWeatherList().get(position);
 			setDisplayValue(hourlyWeather);
@@ -60,7 +58,7 @@ public class ForecastToView
 	
 	private int[] buildTempArray() {
 		int[] array = new int[5];
-		if ( ! getWeatherList().isEmpty() ) {
+		if ( ! getWeatherList().isEmpty() && getWeatherList().size() > 4 ) {
 			for ( int i = 0; i < 5; i++ ) {
 				array[i] =
 						ColorHelper.colorForTemperature(( float ) getWeatherList().get(i)

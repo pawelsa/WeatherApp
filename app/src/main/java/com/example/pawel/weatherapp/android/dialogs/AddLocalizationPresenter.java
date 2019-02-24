@@ -1,4 +1,4 @@
-package com.example.pawel.weatherapp.android.Dialogs;
+package com.example.pawel.weatherapp.android.dialogs;
 
 import android.content.Context;
 import android.view.LayoutInflater;

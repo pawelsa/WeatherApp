@@ -1,14 +1,15 @@
 package com.example.pawel.weatherapp.android.detail;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pawel.weatherapp.ForecastToView;
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.databinding.FragmentForecastDetailBinding;
+import com.example.pawel.weatherapp.weatherModels.ForecastToView;
+import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
+import com.example.weatherlibwithcityphotos.ForecastsListener;
 import com.example.weatherlibwithcityphotos.MainLib;
 
 import androidx.annotation.NonNull;
@@ -20,15 +21,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.transition.ChangeBounds;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class DetailFragment
 		extends Fragment {
 	
-	FragmentForecastDetailBinding binding;
-	
+	private FragmentForecastDetailBinding binding;
+	private DetailViewModel viewModel;
 	
 	@Nullable
 	@Override
@@ -49,31 +47,49 @@ public class DetailFragment
 		                                    view.findViewById(R.id.tb_detail_toolbar),
 		                                    controller);
 		
-		int itemId = DetailFragmentArgs.fromBundle(getArguments()).getCityId();
-		Log.i("ForecastID", "DetailFragment : " + itemId);
+		viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+		if ( savedInstanceState == null ) {
+			viewModel.init();
+		}
 		
-		Disposable disposable = MainLib.readForecastFor(itemId)
-				.map(ForecastToView::new)
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.map(forecastToView -> {
-					DetailViewModel viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-					if ( savedInstanceState == null ) {
-						viewModel.init();
-					}
-					viewModel.addNewForecast(forecastToView);
-					return viewModel;
-				})
-				.subscribe(viewModel -> {
-					binding.setViewModel(viewModel);
-					
-					binding.detailHeaderGradient.getRoot().setTransitionName(String.valueOf(itemId));
-					ChangeBounds changeBounds = new ChangeBounds();
-					changeBounds.setDuration(300L);
-					this.setSharedElementEnterTransition(changeBounds);
-					this.setSharedElementReturnTransition(changeBounds);
-					
-					startPostponedEnterTransition();
-				});
+		int itemId = DetailFragmentArgs.fromBundle(getArguments()).getCityId();
+		
+		MainLib.addListener(getListener(itemId));
+		MainLib.readForecastFor(itemId);
+	}
+	
+	ForecastsListener getListener(int itemId) {
+		return new ForecastsListener() {
+			@Override
+			public void onSuccess(ForecastWithPhoto forecast) {
+				ForecastToView forecastToView = new ForecastToView(forecast);
+				viewModel.addNewForecast(forecastToView);
+				
+				binding.setViewModel(viewModel);
+				
+				binding.detailHeaderGradient.getRoot().setTransitionName(String.valueOf(itemId));
+				ChangeBounds changeBounds = new ChangeBounds();
+				changeBounds.setDuration(300L);
+				setSharedElementEnterTransition(changeBounds);
+				setSharedElementReturnTransition(changeBounds);
+				
+				startPostponedEnterTransition();
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+			
+			}
+			
+			@Override
+			public void isLoading(boolean loading) {
+			
+			}
+			
+			@Override
+			public void removedForecast(ForecastWithPhoto forecast) {
+			
+			}
+		};
 	}
 }

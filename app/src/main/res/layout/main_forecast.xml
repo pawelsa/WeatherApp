@@ -10,7 +10,7 @@
 
         <variable
             name="forecast"
-            type="com.example.pawel.weatherapp.ForecastToView" />
+            type="com.example.pawel.weatherapp.weatherModels.ForecastToView" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

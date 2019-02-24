@@ -1,6 +1,6 @@
 package com.example.pawel.weatherapp.android.main;
 
-import com.example.pawel.weatherapp.ForecastToView;
+import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;

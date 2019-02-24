@@ -66,7 +66,7 @@ public class Forecast
 	
 	@Override
 	public boolean isDownloaded() {
-		return ID >= 0;
+		return ID >= 0 && (list != null && ! list.isEmpty() && list.size() > 39);
 	}
 	
 	@Override

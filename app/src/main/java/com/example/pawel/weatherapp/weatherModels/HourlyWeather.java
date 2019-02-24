@@ -1,4 +1,4 @@
-package com.example.pawel.weatherapp.WeatherModels;
+package com.example.pawel.weatherapp.weatherModels;
 
 public class HourlyWeather {
 	
