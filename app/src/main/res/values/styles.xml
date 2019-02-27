@@ -29,7 +29,6 @@
     <style name="ExpandedDetailAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">#FFF</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="HomeAppBar" parent="@android:style/TextAppearance.Medium">

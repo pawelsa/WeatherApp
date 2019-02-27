@@ -24,7 +24,6 @@ public class WeatherLib {
 	private static Activity activity;
 	
 	// TODO: 21.02.2019 when downloading was stopped by closing the app, it should download once again forecast
-	/*   TODO sprawdzic czy jest sprawdzany  status okna pause restart  */
 	public static void setupWeatherLib(Activity activity, String weatherApiKey) {
 		
 		WEATHER_API_KEY = weatherApiKey;
@@ -39,6 +38,10 @@ public class WeatherLib {
 	
 	public static Context getContext() {
 		return activity.getApplicationContext();
+	}
+	
+	public static Activity getActivity() {
+		return activity;
 	}
 	
 	public static void useUnits(Units units) {

@@ -28,7 +28,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/city_not_downloaded"
             android:textSize="36sp"
-            android:visibility="gone"
+            android:visibility="@{forecast.downloaded ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +54,7 @@
 
         <ImageView
             android:id="@+id/iv_card_weatherIcon"
+            android:contentDescription="@string/weather_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"

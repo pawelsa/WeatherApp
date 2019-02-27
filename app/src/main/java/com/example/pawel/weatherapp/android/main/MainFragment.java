@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.example.pawel.weatherapp.R;
 import com.example.pawel.weatherapp.android.dialogs.AddLocalizationBottomSheet;
-import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
 import com.example.pawel.weatherapp.databinding.FragmentMainBinding;
+import com.example.pawel.weatherapp.databinding.MainCardForecastBinding;
 import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
@@ -30,11 +30,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.transition.Explode;
 
-// TODO: 21.02.2019 MainLib.dispose() should be called when fragment is stopped
 //TODO: DiffUtil have to be repaired in main adapter
-// TODO: 21.02.2019 When item is not downloaded, layout should display that
 //TODO: Fixed* - App crashes when new city is added, because color array is not created, because there is no data
-//TODO: When not downloaded, the "Not downloaded" text does not appear
 
 public class MainFragment
 		extends Fragment {
@@ -142,7 +139,7 @@ public class MainFragment
 		builder.show();
 	}
 	
-	private void navigateTo(CardMainForecastBinding binding) {
+	private void navigateTo(MainCardForecastBinding binding) {
 		if ( binding != null ) {
 			ForecastToView forecastToView = binding.getForecast();
 			

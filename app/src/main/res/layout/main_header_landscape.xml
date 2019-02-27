@@ -14,7 +14,7 @@
 
         <include
             android:id="@+id/v_detail_header_gradient"
-            layout="@layout/header_gradient"
+            layout="@layout/main_header_gradient"
             app:forecast="@{forecast}" />
 
         <TextView

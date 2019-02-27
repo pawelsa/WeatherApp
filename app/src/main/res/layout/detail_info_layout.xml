@@ -26,11 +26,10 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="1"
-            bind:orientation="@{RecyclerView.HORIZONTAL}"
+            tools:itemCount="2"
+            tools:listitem="@layout/detail_recycler_item_icon"
             bind:setAdapter="@{viewModel.getAdapter()}"
-            tools:listitem="@layout/item_detail_icon"
-            tools:orientation="horizontal" />
+            tools:orientation="@{RecyclerView.HORIZONTAL}" />
 
         <include
             layout="@layout/detail_of_forecast"

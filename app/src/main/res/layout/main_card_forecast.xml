@@ -38,12 +38,12 @@
 
                 <include
                     android:id="@+id/card_detail_header"
-                    layout="@layout/header_main_landscape"
+                    layout="@layout/main_header_landscape"
                     app:forecast="@{forecast}" />
 
                 <include
                     android:id="@+id/card_main_info"
-                    layout="@layout/main_forecast"
+                    layout="@layout/main_general_forecast_info"
                     app:forecast="@{forecast}" />
 
             </LinearLayout>

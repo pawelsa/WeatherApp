@@ -131,7 +131,7 @@ public class ForecastStreams {
 	
 	static void downloadForecastsForCoordinates() {
 		
-		Maybe<Forecast> forecastObservable = GPSLocation.locationLowPower()
+		Maybe<Forecast> forecastObservable = GPSLocation.getLocation()
 				.firstElement()
 				.flatMap(location -> ForecastDownload.getForecastRequestForCoordinates(String.valueOf(location.getLatitude()),
 				                                                                       String.valueOf(location.getLongitude()),
@@ -154,7 +154,7 @@ public class ForecastStreams {
 				                                     .doOnError(throwable -> ListenerManager.isLoadingListener(false))));
 	}
 	
-	public static void readForecastFor(int cityID) {
+	static void readForecastFor(int cityID) {
 		disposables.add(getLoadingDisposable(DatabaseManager.readForecastFor(cityID)));
 	}
 	

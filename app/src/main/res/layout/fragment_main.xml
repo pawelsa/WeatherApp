@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 bind:setAdapter="@{viewModel.getAdapter()}"
-                tools:listitem="@layout/card_main_forecast">
+                tools:listitem="@layout/main_card_forecast">
 
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -55,7 +55,7 @@
             android:id="@+id/FAB_home_fab"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_gravity="bottom|right|end"
+            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"

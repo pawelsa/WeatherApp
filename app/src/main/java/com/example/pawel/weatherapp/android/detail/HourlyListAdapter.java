@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.pawel.weatherapp.R;
-import com.example.pawel.weatherapp.databinding.ItemDetailIconBinding;
+import com.example.pawel.weatherapp.databinding.DetailRecyclerItemIconBinding;
 import com.example.pawel.weatherapp.weatherModels.HourlyWeather;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class HourlyListAdapter
 	private List<HourlyWeather> hourlyWeatherList = new ArrayList<>();
 	private ObservableInt selectedItem = new ObservableInt(- 1);
 	
-	public HourlyListAdapter(
+	HourlyListAdapter(
 			OnHourlyItemClickedListener listener) {
 		this.listener = listener;
 	}
@@ -36,7 +36,7 @@ public class HourlyListAdapter
 		setHourlyWeatherList(hourlyWeatherList);
 	}
 	
-	public void setHourlyWeatherList(List<HourlyWeather> hourlyWeatherList) {
+	void setHourlyWeatherList(List<HourlyWeather> hourlyWeatherList) {
 		this.hourlyWeatherList = hourlyWeatherList;
 		if ( this.hourlyWeatherList.size() > 0 ) {
 			selectedItem.set(0);
@@ -48,10 +48,10 @@ public class HourlyListAdapter
 	@Override
 	public HourlyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		
-		ItemDetailIconBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-		                                                        R.layout.item_detail_icon,
-		                                                        parent,
-		                                                        false);
+		DetailRecyclerItemIconBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+		                                                                R.layout.detail_recycler_item_icon,
+		                                                                parent,
+		                                                                false);
 		return new HourlyViewHolder(binding);
 	}
 	
@@ -68,9 +68,9 @@ public class HourlyListAdapter
 	class HourlyViewHolder
 			extends RecyclerView.ViewHolder {
 		
-		private ItemDetailIconBinding binding;
+		private DetailRecyclerItemIconBinding binding;
 		
-		public HourlyViewHolder(@NonNull ItemDetailIconBinding binding) {
+		HourlyViewHolder(@NonNull DetailRecyclerItemIconBinding binding) {
 			super(binding.getRoot());
 			this.binding = binding;
 		}

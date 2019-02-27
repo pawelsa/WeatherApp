@@ -26,7 +26,7 @@ public class AddLocalizationBottomSheet
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 	                         @Nullable Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.bs_add_localization, container, false);
+		View v = inflater.inflate(R.layout.main_add_localization_sheet, container, false);
 		
 		presenter = new AddLocalizationPresenter(inflater.getContext());
 		return v;

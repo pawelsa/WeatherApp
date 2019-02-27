@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.pawel.weatherapp.R;
-import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
+import com.example.pawel.weatherapp.databinding.MainCardForecastBinding;
 import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 
 import androidx.annotation.NonNull;
@@ -28,8 +28,8 @@ public class MainForecastAdapter
 	
 	@NonNull
 	public ForecastCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		CardMainForecastBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-		                                                          R.layout.card_main_forecast,
+		MainCardForecastBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+		                                                          R.layout.main_card_forecast,
 		                                                          parent,
 		                                                          false);
 		return new ForecastCardViewHolder(binding);
@@ -42,9 +42,9 @@ public class MainForecastAdapter
 	
 	class ForecastCardViewHolder
 			extends RecyclerView.ViewHolder {
-		final CardMainForecastBinding binding;
+		final MainCardForecastBinding binding;
 		
-		ForecastCardViewHolder(CardMainForecastBinding binding) {
+		ForecastCardViewHolder(MainCardForecastBinding binding) {
 			super(binding.getRoot());
 			this.binding = binding;
 		}
@@ -63,7 +63,7 @@ public class MainForecastAdapter
 	}
 	
 	interface ForecastClickListener {
-		void onForecastClicked(CardMainForecastBinding binding);
+		void onForecastClicked(MainCardForecastBinding binding);
 		void onForecastLongClicked(String cityName, int cityID);
 	}
 	

@@ -2,7 +2,7 @@ package com.example.pawel.weatherapp.android.main;
 
 import android.util.Pair;
 
-import com.example.pawel.weatherapp.databinding.CardMainForecastBinding;
+import com.example.pawel.weatherapp.databinding.MainCardForecastBinding;
 import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class MainFragmentViewModel
 		extends ViewModel {
 	
 	private static final String TAG = MainFragmentViewModel.class.getSimpleName();
-	private MutableLiveData<CardMainForecastBinding> selected;
+	private MutableLiveData<MainCardForecastBinding> selected;
 	private MutableLiveData<Pair> selectedToRemove;
 	public ObservableInt loading;
 	private ForecastsList forecastMemory;
@@ -54,7 +54,7 @@ public class MainFragmentViewModel
 		this.adapter.notifyDataSetChanged();
 	}
 	
-	MutableLiveData<CardMainForecastBinding> getSelected() {
+	MutableLiveData<MainCardForecastBinding> getSelected() {
 		return selected;
 	}
 	
@@ -70,7 +70,7 @@ public class MainFragmentViewModel
 		if ( adapterListener == null ) {
 			adapterListener = new MainForecastAdapter.ForecastClickListener() {
 				@Override
-				public void onForecastClicked(CardMainForecastBinding binding) {
+				public void onForecastClicked(MainCardForecastBinding binding) {
 					selected.setValue(binding);
 				}
 				
