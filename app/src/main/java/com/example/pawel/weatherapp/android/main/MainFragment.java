@@ -30,8 +30,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.transition.Explode;
 
-//TODO: DiffUtil have to be repaired in main adapter
-//TODO: Fixed* - App crashes when new city is added, because color array is not created, because there is no data
+
 
 public class MainFragment
 		extends Fragment {
@@ -102,6 +101,7 @@ public class MainFragment
 			
 			@Override
 			public void onError(Throwable t) {
+				t.printStackTrace();
 				Snackbar.make(binding.clHomeMain, t.getMessage(), Snackbar.LENGTH_LONG)
 						.show();
 			}

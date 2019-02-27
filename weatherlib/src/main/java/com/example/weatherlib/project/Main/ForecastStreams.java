@@ -61,7 +61,7 @@ public class ForecastStreams {
 	
 	private static Flowable<Forecast> ifOldDataThenUpdate(Flowable<Forecast> stream) {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
-		
+		// TODO: 27.02.2019 this needs to be repaired
 		Calendar cTs = Calendar.getInstance();
 		cTs.setTimeInMillis(ts.getTime());
 		
@@ -80,20 +80,22 @@ public class ForecastStreams {
 					}
 				})
 				.filter(currentWeathers -> currentWeathers.size() > 0)
-				.flatMap(currentWeathers -> getRefreshingForecastStream(stream))
-				/*.flatMap(currentWeathers -> {
-					if ( currentWeathers.size() > 0 ) {
-						Log.i("Elements", "more");
-						return getRefreshingForecastStream(stream);
-					} else {
-						Log.i("Elements", "0");
-						return Flowable.empty();
-					}
-				})*/;
+				.flatMap(currentWeathers -> getRefreshingForecastStream(stream));
 	}
 	
 	private static Flowable<Forecast> getStartLoadingForecastStream() {
-		return getStartLoadingStream().flatMap(integer -> DatabaseManager.getForecasts());
+		
+		Flowable<Forecast> withoutChecking = getStartLoadingStream().flatMap(integer -> DatabaseManager.getForecasts());
+		Flowable<Forecast> withChecking = withoutChecking
+				.flatMap(forecast -> forecast.isDownloaded() ?
+				                     Flowable.just(forecast) :
+				                     Flowable.merge(Flowable.just(forecast),
+				                                    ForecastDownload.getForecastRequest(forecast.city.name, USED_UNIT)
+						                                    .subscribeOn(Schedulers.io())
+						                                    .toFlowable()));
+		
+		return NetworkCheck.isConnectedToNetwork()
+				.flatMap(connectedToNetwork -> connectedToNetwork ? withChecking : withoutChecking);
 	}
 	
 	private static Flowable<Forecast> getRefreshingForecastStream(Flowable<Forecast> entryFlowable) {

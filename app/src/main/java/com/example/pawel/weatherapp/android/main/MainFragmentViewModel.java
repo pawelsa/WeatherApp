@@ -50,7 +50,7 @@ public class MainFragmentViewModel
 	}
 	
 	void setForecastsInAdapter(List<ForecastToView> forecastToViewList) {
-		this.adapter.submitList(forecastToViewList);
+		this.adapter.updateItems(forecastToViewList);
 		this.adapter.notifyDataSetChanged();
 	}
 	
