@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +17,7 @@ import com.example.pawel.weatherapp.weatherModels.ForecastToView;
 import com.example.weatherlibwithcityphotos.ForecastWithPhoto;
 import com.example.weatherlibwithcityphotos.ForecastsListener;
 import com.example.weatherlibwithcityphotos.MainLib;
+import com.example.weatherlibwithcityphotos.Units;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -22,6 +25,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -30,7 +34,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.transition.Explode;
 
-
+// TODO: 28.02.2019 changing between C and F
 
 public class MainFragment
 		extends Fragment {
@@ -44,8 +48,9 @@ public class MainFragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 	                         @Nullable Bundle savedInstanceState) {
-		binding = DataBindingUtil.inflate(
-				inflater, R.layout.fragment_main, container, false);
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+		(( AppCompatActivity ) getActivity()).setSupportActionBar(binding.tbHomeToolbar);
+		setHasOptionsMenu(true);
 		return binding.getRoot();
 	}
 	
@@ -67,10 +72,6 @@ public class MainFragment
 		binding.FABHomeFab.setOnClickListener(v -> {
 			bottomSheet = new AddLocalizationBottomSheet();
 			bottomSheet.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), bottomSheet.getTag());
-			/*
-			MainLib.downloadNewForecastFor("Pszczyna");
-			MainLib.downloadNewForecastFor("Mountain View");
-			MainLib.downloadNewForecastFor("Warszawa");*/
 		});
 		
 	}
@@ -157,5 +158,33 @@ public class MainFragment
 			Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_activity_fragment)
 					.navigate(action.getActionId(), data, null, extras);
 		}
+	}
+	
+	@Override
+	public void onPrepareOptionsMenu(@NonNull Menu menu) {
+		menu.clear();
+		if ( MainLib.getUnits().equals("METRIC") ) {
+			menu.add(0, 0, Menu.NONE, getString(R.string.fahrenheit));
+			menu.findItem(0).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		} else {
+			menu.add(0, 1, Menu.NONE, getString(R.string.celsius));
+			menu.findItem(1).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+		super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+			case 0:
+				MainLib.useUnits(Units.IMPERIAL);
+				break;
+			case 1:
+				MainLib.useUnits(Units.METRIC);
+				break;
+		}
+		getActivity().invalidateOptionsMenu();
+		return false;
 	}
 }

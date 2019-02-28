@@ -23,7 +23,7 @@ public class WeatherLib {
 	
 	private static Activity activity;
 	
-	// TODO: 21.02.2019 when downloading was stopped by closing the app, it should download once again forecast
+	// TODO: 21.02.2019 FIXED* - when downloading was stopped by closing the app, it should download once again forecast
 	public static void setupWeatherLib(Activity activity, String weatherApiKey) {
 		
 		WEATHER_API_KEY = weatherApiKey;
@@ -47,7 +47,7 @@ public class WeatherLib {
 	public static void useUnits(Units units) {
 		if ( ! USED_UNIT.equals(units.name()) ) {
 			USED_UNIT = units.name();
-			Hawk.put(UNITS, units);
+			Hawk.put(UNITS, units.name());
 			downloadDataForNewUnits();
 		}
 	}

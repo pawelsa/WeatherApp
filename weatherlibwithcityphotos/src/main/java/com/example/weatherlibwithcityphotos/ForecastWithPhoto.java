@@ -13,15 +13,17 @@ public class ForecastWithPhoto {
 	private boolean downloaded = false;
 	private List<HourlyWeather> weatherList;
 	private City city;
+	public String units;
 	
 	
 	public ForecastWithPhoto() {
 	}
 	
-	public ForecastWithPhoto(Forecast forecast) {
+	ForecastWithPhoto(Forecast forecast) {
 		this.city = new com.example.weatherlibwithcityphotos.WeatherModels.City(forecast.city);
 		this.weatherList = convertWeatherList(forecast.list);
 		this.downloaded = forecast.isDownloaded();
+		this.units = forecast.units;
 	}
 	
 	public String getPhotoReference() {
@@ -71,11 +73,15 @@ public class ForecastWithPhoto {
 		if ( obj instanceof ForecastWithPhoto ) {
 			ForecastWithPhoto other = ( ForecastWithPhoto ) obj;
 			int equalName = instance.compare(this.city.getName(), other.city.getName());
-			result = this.city.getID() == other.city.getID() || equalName == 0;
+			result =
+					(this.city.getID() != other.city.getID() && equalName != 0) || ! this.isDownloaded() || this.units.equals(
+							other.units);
 		} else if ( obj instanceof Forecast ) {
 			Forecast other = ( Forecast ) obj;
 			int equalName = instance.compare(this.city.getName(), other.city.name);
-			result = this.city.getID() == other.city.id || equalName == 0;
+			result =
+					(this.city.getID() != other.city.id && equalName != 0) || ! this.isDownloaded() || this.units.equals(
+							other.units);
 		} else if ( obj instanceof String ) {
 			String otherName = ( String ) obj;
 			int equalName = instance.compare(this.city.getName(), otherName);

@@ -28,7 +28,8 @@ public class Forecast
 	@Column
 	public City city;
 	
-	public String downloadURL;
+	@Column
+	public String units;
 	
 	@OneToMany( methods = OneToMany.Method.ALL, variableName = "list" )
 	public List<CurrentWeather> oneToManyWeathers() {
@@ -85,7 +86,7 @@ public class Forecast
 		if ( obj instanceof Forecast ) {
 			Forecast other = ( Forecast ) obj;
 			int equalName = instance.compare(this.city.name, other.city.name);
-			result = this.ID == other.ID || equalName == 0;
+			result = (this.ID != other.ID && equalName != 0) || ! this.isDownloaded() || this.units.equals(other.units);
 		} else if ( obj instanceof String ) {
 			String otherName = ( String ) obj;
 			int equalName = instance.compare(this.city.name, otherName);

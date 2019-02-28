@@ -14,6 +14,7 @@ import com.example.weatherlibwithcityphotos.MainLib;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -34,6 +35,7 @@ public class DetailFragment
 	                         @Nullable Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(
 				inflater, R.layout.fragment_forecast_detail, container, false);
+		(( AppCompatActivity ) getActivity()).setSupportActionBar(binding.tbDetailToolbar);
 		return binding.getRoot();
 	}
 	
@@ -58,7 +60,7 @@ public class DetailFragment
 		MainLib.readForecastFor(itemId);
 	}
 	
-	ForecastsListener getListener(int itemId) {
+	private ForecastsListener getListener(int itemId) {
 		return new ForecastsListener() {
 			@Override
 			public void onSuccess(ForecastWithPhoto forecast) {

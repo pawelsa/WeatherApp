@@ -51,7 +51,7 @@ public class ForecastDownload {
 		Retrofit retrofit = retrofitBuilder.build();
 		ApiCalls weatherClient = retrofit.create(ApiCalls.class);
 		
-		return getForecast(weatherClient.getForecast(cityName, units, WEATHER_API_KEY))
+		return getForecast(weatherClient.getForecast(cityName, units, WEATHER_API_KEY), units)
 				.doOnSuccess(forecast -> removeNotExistentCity(cityName))
 				.doOnError(throwable -> {
 					if ( matchesException(throwable, NotExists.class) ) {
@@ -60,14 +60,14 @@ public class ForecastDownload {
 				});
 	}
 	
-	private static Maybe<Forecast> getForecast(Maybe<Response<Forecast>> requestStream) {
+	private static Maybe<Forecast> getForecast(Maybe<Response<Forecast>> requestStream, String units) {
 		
 		return requestStream
 				.flatMap(forecastResponse -> {
 					String requestURL = getURL(forecastResponse);
 					logURL(requestURL);
 					if ( forecastResponse.isSuccessful() && forecastResponse.body() != null ) {
-						forecastResponse.body().downloadURL = requestURL;
+						forecastResponse.body().units = units;
 						return Maybe.just(forecastResponse.body());
 					} else {
 						return Maybe.error(new NotExists());
@@ -88,6 +88,6 @@ public class ForecastDownload {
 		Retrofit retrofit = retrofitBuilder.build();
 		ApiCalls weatherClient = retrofit.create(ApiCalls.class);
 		
-		return getForecast(weatherClient.getForecastForCoordinates(lat, lon, units, WEATHER_API_KEY));
+		return getForecast(weatherClient.getForecastForCoordinates(lat, lon, units, WEATHER_API_KEY), units);
 	}
 }

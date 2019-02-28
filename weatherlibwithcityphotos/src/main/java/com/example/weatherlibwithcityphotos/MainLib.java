@@ -6,7 +6,6 @@ import com.example.getphotoforcity.PhotoDownload;
 import com.example.weatherlib.project.Main.ForecastListener;
 import com.example.weatherlib.project.Main.ForecastStreams;
 import com.example.weatherlib.project.Main.WeatherLib;
-import com.example.weatherlib.project.Tools.Units;
 import com.example.weatherlib.project.WeatherModel.Forecast;
 
 import io.reactivex.Single;
@@ -25,8 +24,16 @@ public class MainLib {
 		PhotoDownload.setup(activity, googleApiKey);
 	}
 	
+	public static String getUnits() {
+		return WeatherLib.USED_UNIT;
+	}
+	
 	public static void useUnits(Units units) {
-		WeatherLib.useUnits(units);
+		if ( units.equals(Units.IMPERIAL) ) {
+			WeatherLib.useUnits(com.example.weatherlib.project.Tools.Units.IMPERIAL);
+		} else {
+			WeatherLib.useUnits(com.example.weatherlib.project.Tools.Units.METRIC);
+		}
 	}
 	
 	public static void streamForecastsWithRefresh() {

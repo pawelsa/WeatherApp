@@ -20,6 +20,7 @@ public class BindingAdapters {
 	
 	private static final String TAG = BindingAdapters.class.getName();
 	
+	
 	@BindingAdapter( "bind:timeText" )
 	public static void prepareTextFromTimestamp(TextView textView, double timestamp) {
 		Locale currentLocale = textView.getResources().getConfiguration().getLocales().get(0);
@@ -27,6 +28,15 @@ public class BindingAdapters {
 		String formattedTimestamp = dateFormat.format((timestamp - 3600) * 1000);
 		textView.setText(formattedTimestamp);
 	}
+	
+	@BindingAdapter( { "bind:timeText", "bind:timePosition" } )
+	public static void prepareTextFromTimestamp(TextView textView, double timeText, double timePosition) {
+		Locale currentLocale = textView.getResources().getConfiguration().getLocales().get(0);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", currentLocale);
+		String formattedTimestamp = dateFormat.format((timeText + 3 * timePosition * 3600 - 3600) * 1000);
+		textView.setText(formattedTimestamp);
+	}
+	
 	
 	@BindingAdapter( "bind:imageUrl" )
 	public static void loadImage(ImageView view, String url) {
@@ -55,7 +65,7 @@ public class BindingAdapters {
 		bindRecyclerViewAdapter(recyclerView, adapter, RecyclerView.VERTICAL);
 	}
 	
-	@BindingAdapter( { "bind:setAdapter", "bind:orientation" } )
+	@BindingAdapter( value = { "bind:setAdapter", "bind:orientation" } )
 	public static void bindRecyclerViewAdapter(RecyclerView recyclerView, RecyclerView.Adapter<?> adapter,
 	                                           int orientation) {
 		recyclerView.setHasFixedSize(true);
@@ -72,5 +82,6 @@ public class BindingAdapters {
 			seekBar.getThumb().setColorFilter(thumbColor, PorterDuff.Mode.SRC_ATOP);
 		}
 	}
+	
 	
 }

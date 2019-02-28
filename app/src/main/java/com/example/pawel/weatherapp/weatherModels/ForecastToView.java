@@ -29,6 +29,7 @@ public class ForecastToView
 	public ObservableField<String> dispSnow = new ObservableField<>("");
 	public ObservableField<String> cityName = new ObservableField<>("");
 	public ObservableBoolean downloaded = new ObservableBoolean(false);
+	public double firstTimestamp;
 	
 	private int[] tempArray;
 	
@@ -44,6 +45,7 @@ public class ForecastToView
 		this.cityName.set(getCityName());
 		downloaded.set(this.isDownloaded());
 		if ( this.isDownloaded() && ! getWeatherList().isEmpty() ) {
+			firstTimestamp = getWeatherList().get(0).getDt();
 			setDisplayValue(0);
 			tempArray = buildTempArray();
 		}
@@ -68,7 +70,7 @@ public class ForecastToView
 		return array;
 	}
 	
-	public void setDisplayValue(HourlyWeather hourlyWeather) {
+	private void setDisplayValue(HourlyWeather hourlyWeather) {
 		try {
 			dispWeatherIcon.set(WeatherIcons.getIcon(hourlyWeather.getIcon()));
 			dispTemp.set(String.valueOf(hourlyWeather.getTemp()));
@@ -95,6 +97,7 @@ public class ForecastToView
 		return tempArray;
 	}
 	
+	// TODO: 28.02.2019 color of seekbar dependent on UNITS
 	public void onValueChanged(SeekBar seekBar, int progress, boolean fromUser) {
 		setDisplayValue(progress);
 		int progressColor = ColorHelper.getTempColor(tempArray, progress / 5);

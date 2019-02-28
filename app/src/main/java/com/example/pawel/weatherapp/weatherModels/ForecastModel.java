@@ -11,12 +11,13 @@ public class ForecastModel {
 	private boolean downloaded = false;
 	private List<HourlyWeather> weatherList;
 	private City city;
+	private String units;
 	
 	
-	protected ForecastModel() {
+	ForecastModel() {
 	}
 	
-	public ForecastModel(ForecastModel forecastModel) {
+	ForecastModel(ForecastModel forecastModel) {
 		updateModelWithNewData(forecastModel);
 	}
 	
@@ -24,6 +25,7 @@ public class ForecastModel {
 		this.city = forecastModel.city;
 		this.weatherList = forecastModel.getWeatherList();
 		this.downloaded = forecastModel.isDownloaded();
+		this.units = forecastModel.units;
 	}
 	
 	public List<HourlyWeather> getWeatherList() {
@@ -37,9 +39,10 @@ public class ForecastModel {
 		return downloaded;
 	}
 	
-	public ForecastModel(ForecastWithPhoto forecast) {
+	ForecastModel(ForecastWithPhoto forecast) {
 		this.city = new City(forecast.getCity(), forecast.getPhotoReference());
 		this.downloaded = forecast.isDownloaded();
+		this.units = forecast.units;
 		if ( this.downloaded ) {
 			this.weatherList = convertWeatherList(forecast.getWeatherList());
 		}
@@ -81,7 +84,8 @@ public class ForecastModel {
 		if ( obj instanceof ForecastModel ) {
 			ForecastModel other = ( ForecastModel ) obj;
 			int equalName = instance.compare(this.getCityName(), other.getCityName());
-			result = this.getCityID() == other.getCityID() || equalName == 0;
+			result = (this.getCityID() == other.getCityID() || equalName == 0)
+			         && ((this.units != null && other.units != null && this.units.equals(other.units)) || true);
 		} else if ( obj instanceof String ) {
 			String otherName = ( String ) obj;
 			int equalName = instance.compare(this.getCityName(), otherName);

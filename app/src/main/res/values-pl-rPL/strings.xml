@@ -22,4 +22,7 @@
     <string name="detail_rain">Ilość deszczu w 3h %s</string>
     <string name="detail_snow">Ilość śniegu w 3h %s</string>
     <string name="simple_date">%1$s %2$s</string>
+    <string name="weather_icon">Ikonka pogody</string>
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">F</string>
 </resources>

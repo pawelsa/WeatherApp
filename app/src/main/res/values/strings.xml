@@ -26,5 +26,7 @@
     <string name="detail_snow">Snow in 3h %s</string>
     <string name="simple_date">%1$s %2$s</string>
     <string name="weather_icon">Weather icon</string>
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">F</string>
 
 </resources>
