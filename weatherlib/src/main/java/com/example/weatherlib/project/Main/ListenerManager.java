@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ListenerManager {
 	
+	private static final String TAG = ListenerManager.class.getName();
+	
 	private static List<ForecastListener> listeners = new ArrayList<>();
 	
 	static void addListener(ForecastListener listener) {
@@ -25,7 +27,7 @@ public class ListenerManager {
 		}
 	}
 	
-	public static void onErrorListener(Throwable throwable) {
+	static void onErrorListener(Throwable throwable) {
 		for ( ForecastListener listener : listeners ) {
 			listener.onError(throwable);
 		}

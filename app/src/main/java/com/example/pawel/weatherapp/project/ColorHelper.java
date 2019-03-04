@@ -2,16 +2,25 @@ package com.example.pawel.weatherapp.project;
 
 import android.graphics.Color;
 
+import com.example.weatherlibwithcityphotos.MainLib;
+import com.example.weatherlibwithcityphotos.Units;
+
 public class ColorHelper {
 
     static String TAG = "ColorHelper";
-    private static int MAX_TEMP = 40;
-    private static int MIN_TEMP = -20;
+    private static int MAX_TEMP_F = 104;
+    private static int MIN_TEMP_F = - 4;
+    private static int MAX_TEMP_C = 40;
+    private static int MIN_TEMP_C = - 20;
+    private static int MAX_TEMP = MainLib.getUnits()
+                                          .equals(Units.METRIC.name()) ? MAX_TEMP_C : MAX_TEMP_F;
+    private static int MIN_TEMP = MainLib.getUnits()
+                                          .equals(Units.METRIC.name()) ? MIN_TEMP_C : MIN_TEMP_F;
     private static int TEMP_DIFF = MAX_TEMP - MIN_TEMP;
     private static int HOT_COLOR = Color.parseColor("#FF8000");
-    static int[] START_COLOR = colorToBasic(HOT_COLOR);
+    private static int[] START_COLOR = colorToBasic(HOT_COLOR);
     private static int COLD_COLOR = Color.parseColor("#165B88");
-    static int[] END_COLOR = colorToBasic(COLD_COLOR);
+    private static int[] END_COLOR = colorToBasic(COLD_COLOR);
 
     private static int[] colorToBasic(int color) {
 
@@ -25,12 +34,12 @@ public class ColorHelper {
     public static int pickHex(float progress) {
         return pickHex(START_COLOR, END_COLOR, progress, 1 - progress);
     }
-
-    public static int pickHex(int[] color1, int[] color2, float weight) {
+    
+    private static int pickHex(int[] color1, int[] color2, float weight) {
         return pickHex(color1, color2, weight, 1 - weight);
     }
-
-    public static int pickHex(int[] color1, int[] color2, float weight, float restWeight) {
+    
+    private static int pickHex(int[] color1, int[] color2, float weight, float restWeight) {
         return Color.argb(Math.round(color2[0] * weight + color1[0] * restWeight),
                 Math.round(color2[1] * weight + color1[1] * restWeight),
                 Math.round(color2[2] * weight + color1[2] * restWeight),

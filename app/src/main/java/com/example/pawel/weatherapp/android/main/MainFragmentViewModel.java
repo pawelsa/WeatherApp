@@ -15,6 +15,7 @@ public class MainFragmentViewModel
 		extends ViewModel {
 	
 	private static final String TAG = MainFragmentViewModel.class.getSimpleName();
+	
 	private MutableLiveData<MainCardForecastBinding> selected;
 	private MutableLiveData<Pair> selectedToRemove;
 	public ObservableInt loading;
